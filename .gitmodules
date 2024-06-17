@@ -1,0 +1,6 @@
+[submodule "lib/ft_libft"]
+	path = lib/ft_libft
+	url = git@github.com:Pixailz/ft_libft
+[submodule "rsc/helper"]
+	path = rsc/helper
+	url = git@github.com:Pixailz/helper

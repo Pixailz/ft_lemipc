@@ -1,0 +1,130 @@
+# include
+include mk/config.mk			# base config
+include mk/utils.mk				# utils function / var
+include mk/lib.mk				# load lib if needed
+include mk/srcs.mk				# srcs.mk
+include mk/pb.mk				# ui thing, progress bar etc
+
+$(call PB_INIT)
+
+# rule
+## config
+.SILENT:
+
+.PHONY: setup $(LIBS)
+
+.DEFAULT: all
+
+all:			setup $(TARGET)
+
+### TARGETS
+$(TARGET):		$(OBJ_C)
+> $(call P_INF,Creating $(R)$(TARGET)$(RST))
+> printf "\n\n"
+> $(call PB_PRINT_ELAPSED)
+> $(CC) $(CFLAGS) -o $@ $(OBJ_C) $(LIBS)
+> $(call PB_TARGET_DONE)
+
+## objs
+# https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html#Automatic-Variables
+# $(<)		: dependencies
+# $(@)		: full target
+# $(@D)		: dir target
+$(OBJ_C):		$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
+> $(call PB_PRINT,$(@))
+> gcc $(CFLAGS) -o $@ -c $<
+
+### LIBS
+$(LIBFT):
+ifeq ($(USE_LIBFT),1)
+> PROG_NAME=$(TARGET) DEBUG=$(DEBUG) DEBUG_FD=$(DEBUG_FD) AUTHOR=$(AUTHOR) \
+	VERSION=$(VERSION) make -C lib/ft_libft all
+endif
+
+$(MINI_LIBX):
+ifeq ($(USE_MINI_LIBX),1)
+> make -C lib/minilibx-linux all
+endif
+
+setup:	$(BIN_DIR) print_logo print_debug $(LIBS) helper
+
+$(BIN_DIR):
+> $(call MKDIR,$(BIN_DIR))
+
+print_debug:
+ifeq ($(shell [ $(DEBUG_MAKE) -ge 1 ] && printf 1 || printf 0),1)
+> $(call P_INF,RUNTIME INFOS)
+> printf "\t%s"
+> $(call P_WAR,DEBUG: $(DEBUG))
+> printf "\t%s"
+> $(call P_WAR,CFLAGS:)
+> printf "\t\t%s\n" $(CFLAGS)
+> printf "\t%s"
+> $(call P_WAR,.SHELLFLAGS:)
+> printf "\t\t%s\n"  $(.SHELLFLAGS)
+> printf "\t%s"
+> $(call P_WAR,OBJ_C:)
+> printf "\t\t%s\n"  $(OBJ_C)
+> printf "\t%s"
+> $(call P_WAR,SRC_C:)
+> printf "\t\t%s\n"  $(SRC_C)
+endif
+
+print_logo:
+ifeq ($(LOGO_PRINTED),)
+> printf "%b\n" "$(ASCII_COLOR)$$ASCII_BANNER$(RST)"
+> $(eval export LOGO_PRINTED=1)
+endif
+
+### HELPER
+
+helper:
+> ./rsc/helper/helper -S ft_lem_ipc_mem
+
+### RUN
+run:					re
+> ./$(TARGET)
+
+### CLEAN
+clean:
+> $(call P_FAI,Removing obj)
+> rm -rf $(OBJ_DIR)
+
+clean_all:				clean
+ifeq ($(USE_LIBFT),1)
+> make -C lib/ft_libft clean
+endif
+ifeq ($(USE_MINI_LIBX),1)
+> make -C lib/minilibx-linux clean
+endif
+
+fclean:							clean
+ifeq ($(BONUS),1)
+> $(call P_FAI,Removing $(TARGET))
+> rm -rf $(TARGET)
+else
+> $(call P_FAI,Removing $(TARGET_BONUS))
+> rm -rf $(TARGET_BONUS)
+endif
+
+fclean_all:				fclean
+ifeq ($(USE_LIBFT),1)
+> make -C lib/ft_libft fclean
+endif
+ifeq ($(USE_MINI_LIBX),1)
+> make -C lib/minilibx-linux clean
+endif
+
+### RE
+
+re_lib:
+ifeq ($(USE_LIBFT),1)
+> make -C ./lib/ft_libft re
+endif
+ifeq ($(USE_MINI_LIBX),1)
+> make -C ./lib/minilibx-linux re
+endif
+
+re:						fclean all
+
+re_all:					fclean_all all

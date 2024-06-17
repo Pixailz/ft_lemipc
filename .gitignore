@@ -1,0 +1,10 @@
+# COMPILED THING
+obj/*
+lemipc
+
+# coredump
+vgcore\.*
+
+# Run log and temp file
+rsc/log/
+rsc/lemipc_*
