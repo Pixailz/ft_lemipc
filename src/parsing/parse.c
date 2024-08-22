@@ -15,6 +15,12 @@
 t_bool			IS_GRAPHICAL = FALSE;
 t_bool			IS_GRAPHICAL_TEXT = FALSE;
 t_lem_team_id	TEAM_ID = 0;
+t_ai_id			AI_ID = 0;
+
+t_ai_id_list AI_ID_LIST[2] = {
+	{RANDOM,	"rand"},
+	{LOW,		"low"},
+};
 
 t_lem_team_id	get_team_id(void)
 {
@@ -24,18 +30,17 @@ t_lem_team_id	get_team_id(void)
 	t_opts			*opts;
 
 	opts = ft_get_opts(0);
-	if (ft_opts_len(opts) != 1)
+	if (ft_opts_len(opts) < 1)
 	{
-		ft_perr("Only one arg is needed\n");
+		ft_perr("1 or 2 arg is expected\n");
 		return (ERR_PARSING);
 	}
 	ptr = opts->value;
-	if (!ptr || !ptr->value || (ptr->next && ptr->next->value))
+	if (!ptr || !ptr->value)
 	{
 		ft_perr("Unknown\n");
 		return (ERR_PARSING);
 	}
-
 	team_id = ft_patoi(ptr->value, &has_overflow);
 	if (has_overflow || team_id < 1 || team_id > LEM_IPC_NB_TEAM)
 	{
@@ -43,6 +48,39 @@ t_lem_team_id	get_team_id(void)
 		return (ERR_PARSING);
 	}
 	TEAM_ID = team_id;
+	return (SUCCESS);
+}
+
+t_ai_id translate_ai_id(char *ai_id_str)
+{
+	int				counter;
+
+	counter = 0;
+	while (counter < 2)
+	{
+		if (!ft_strcmp(AI_ID_LIST[counter].str, ai_id_str))
+			return (AI_ID_LIST[counter].id);
+		counter++;
+	}
+	return (-1);
+}
+
+t_bin get_ai(void)
+{
+	t_opt_value		*ptr;
+
+	ptr = ft_get_opts(0)->value;
+	if (!ptr->next || !ptr->next->value)
+	{
+		AI_ID = AI_ID_DEFAULT;
+		return (SUCCESS);
+	}
+	AI_ID = translate_ai_id(ptr->next->value);
+	if (AI_ID < 0)
+	{
+		ft_perr("Enter a valid team id\n");
+		return (ERR_PARSING);
+	}
 	return (SUCCESS);
 }
 
@@ -56,6 +94,8 @@ t_bin	post_parse_grapical(void)
 t_bin	post_parse_player(void)
 {
 	if (get_team_id())
+		return (ERR_PARSING);
+	if (get_ai())
 		return (ERR_PARSING);
 	return (SUCCESS);
 }

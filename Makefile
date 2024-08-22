@@ -79,7 +79,7 @@ endif
 ### HELPER
 
 helper:
-> ./rsc/helper/helper -S ft_lem_ipc_mem
+> ./rsc/helper/helper -S ft_lem_ipc
 
 ### RUN
 run:					re

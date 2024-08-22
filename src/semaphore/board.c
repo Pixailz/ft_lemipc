@@ -13,7 +13,7 @@
 #include "lem_ipc.h"
 
 extern	t_lem_ipc_mem	*LEM_IPC_MEM;
-extern	t_lem_ipc_sem		LEM_IPC_SEM;
+extern	t_lem_ipc_sem	LEM_IPC_SEM;
 
 t_tile	*get_board(void)
 {

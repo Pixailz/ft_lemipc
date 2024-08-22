@@ -12,16 +12,15 @@
 
 #include "lem_ipc.h"
 
-extern t_ai_id AI_ID;
+extern		t_bool 			IS_SIGINT;
+extern		t_bool 			IS_DEAD;
 
-t_error	run_player(void)
+void	loop_random(void)
 {
-	switch (AI_ID)
+	while (!IS_SIGINT && !IS_DEAD)
 	{
-		case (RANDOM):
-			loop_random(); break ;
-		case (LOW):
-			loop_low(); break ;
+		usleep(LEM_IPC_FREQ);
+		while (!move_player(ft_randint(0, 4)))
+			;
 	}
-	return (SUCCESS);
 }

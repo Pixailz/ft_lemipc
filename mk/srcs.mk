@@ -16,7 +16,9 @@ SRC_C := free/main.c \
 		 parsing/cmd/help.c \
 		 parsing/cmd/usage.c \
 		 parsing/parse.c \
+		 player/low.c \
 		 player/main.c \
+		 player/random.c \
 		 semaphore/board.c \
 		 semaphore/max_nb_player.c \
 		 semaphore/move_player.c \

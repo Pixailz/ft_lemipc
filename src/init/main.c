@@ -14,6 +14,7 @@
 
 extern	t_bool	IS_GRAPHICAL;
 extern	t_bool	MY_ID;
+extern	t_ai_id	AI_ID;
 
 t_error	init_prog(void)
 {
@@ -31,5 +32,6 @@ t_error	init_prog(void)
 		init_player();
 	ft_printf("IS_GRAPHICAL = %d\n", IS_GRAPHICAL);
 	ft_printf("MY_ID = %d\n", MY_ID);
+	ft_printf("MY_AI_ID = %d\n", AI_ID);
 	return (ret);
 }

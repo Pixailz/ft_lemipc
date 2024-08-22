@@ -47,18 +47,20 @@
 typedef t_uint8		t_lem_team_id;
 typedef t_uint16	t_lem_player_id;
 
-# define	LEM_IPC_BOARD_LEN_X		200
-# define	LEM_IPC_BOARD_LEN_Y		100
-// # define	LEM_IPC_BOARD_LEN_X		50
-// # define	LEM_IPC_BOARD_LEN_Y		25
+// # define	LEM_IPC_BOARD_LEN_X		200
+// # define	LEM_IPC_BOARD_LEN_Y		100
+# define	LEM_IPC_BOARD_LEN_X		50
+# define	LEM_IPC_BOARD_LEN_Y		25
 # define	LEM_IPC_BOARD_LEN		(LEM_IPC_BOARD_LEN_X * LEM_IPC_BOARD_LEN_Y)
 # define	LEM_IPC_GRAPH_FPS_TEXT	10
 # define	LEM_IPC_GRAPH_FPS_MLX	144
 # define	LEM_IPC_NB_TEAM			8
 # define 	LEM_IPC_FREQ			A_SEC / 10
 // # define 	LEM_IPC_FREQ			100
-# define 	LEM_IPC_SCREEN_X		1920
-# define 	LEM_IPC_SCREEN_Y		1080
+// # define 	LEM_IPC_SCREEN_X		1920
+// # define 	LEM_IPC_SCREEN_Y		1080
+# define 	LEM_IPC_SCREEN_X		1920 / 2
+# define 	LEM_IPC_SCREEN_Y		1080 / 2
 
 # define	CELL_SIZE	8
 
@@ -153,6 +155,21 @@ typedef enum e_dir
 	RIGHT
 }	t_dir;
 
+typedef enum e_ai_id
+{
+	RANDOM = 0,
+	LOW = 1,
+}	t_ai_id;
+
+typedef struct s_ai_id_list
+{
+	int		id;
+	char	*str;
+}	t_ai_id_list;
+
+
+# define AI_ID_DEFAULT	RANDOM
+
 	// KEYBOARD
 		// DEFAULT
 # define KEY_A							0x61
@@ -175,118 +192,153 @@ typedef enum e_dir
 /* ##### */
 
 // free/main.c
-void				free_prog(void);
+
+void			free_prog(void);
 
 // free/mlx.c
-void				free_mlx(void);
+
+void			free_mlx(void);
 
 // free/player.c
-void				free_player(void);
+
+void			free_player(void);
 
 // graphical/mlx/main.c
-int					end_hook(void *mlx);
-void				fill_board(void);
-int					handler_mlx(void *mlx);
-int					key_press(int key_code, void *mlx);
-int					key_release(int key_code, void *mlx);
-t_bin				run_graphical_mlx(void);
+
+int				end_hook(void *mlx);
+void			fill_board(void);
+int				handler_mlx(void *mlx);
+int				key_press(int key_code, void *mlx);
+int				key_release(int key_code, void *mlx);
+t_bin			run_graphical_mlx(void);
 
 // graphical/text/main.c
-char				*text_get_team_color(t_lem_team_id team_id);
-t_size				print_tile_color(t_lem_team_id team_id, char *line);
-t_size				print_tile_char(t_lem_player_id player_id, char *line);
-t_size				print_tile(t_tile tile, char *line);
-t_size				print_border(int cx, int cy, char *line, int *i);
-void				render_map(t_tile *map);
-t_error				run_graphical_text(void);
+
+char			*text_get_team_color(t_lem_team_id team_id);
+t_size			print_tile_color(t_lem_team_id team_id, char *line);
+t_size			print_tile_char(t_lem_player_id player_id, char *line);
+t_size			print_tile(t_tile tile, char *line);
+t_size			print_border(int cx, int cy, char *line, int *i);
+void			render_map(t_tile *map);
+t_error			run_graphical_text(void);
 
 // graphical/text/stat.c
-void				graphical_text_print_stat(t_tile *board);
+
+void			graphical_text_print_stat(t_tile *board);
 
 // init/graphical/main.c
-t_error				init_graphical(void);
+
+t_error			init_graphical(void);
 
 // init/graphical/mlx.c
-t_error				init_scene_border(t_size cell_size);
-t_error				init_scene(void);
-t_error				init_graphical_mlx(void);
+
+t_error			init_scene_border(t_size cell_size);
+t_error			init_scene(void);
+t_error			init_graphical_mlx(void);
 
 // init/main.c
-t_error				init_prog(void);
+
+t_error			init_prog(void);
 
 // init/player/main.c
-t_error				get_random_pos(void);
-t_error				init_player(void);
+
+t_error			get_random_pos(void);
+t_error			init_player(void);
 
 // init/semaphore.c
-t_error				init_semaphore(sem_t **sem, char *name, int value);
-t_error				init_semaphores(void);
+
+t_error			init_semaphore(sem_t **sem, char *name, int value);
+t_error			init_semaphores(void);
 
 // init/shared_memory.c
-t_error				init_shared_memory_mem(void);
-t_error				init_shared_memory(void);
+
+t_error			init_shared_memory_mem(void);
+t_error			init_shared_memory(void);
 
 // init/signal.c
-t_error				init_signal(void);
+
+t_error			init_signal(void);
 
 // main.c
-t_bin				run(int ac, char **av);
-int					main(int ac, char **av);
+
+t_bin			run(int ac, char **av);
+int				main(int ac, char **av);
 
 // parsing/cmd/help.c
-void				help_header(void);
-void				help_part_1(void);
-void				help_footer(void);
-t_bin				help(void);
+
+void			help_header(void);
+void			help_part_1(void);
+void			help_footer(void);
+t_bin			help(void);
 
 // parsing/cmd/usage.c
-t_bin				usage(void);
+
+t_bin			usage(void);
 
 // parsing/parse.c
-t_lem_team_id		get_team_id(void);
-t_bin				post_parse_grapical(void);
-t_bin				post_parse_player(void);
-t_bin				post_parse(void);
-t_bin				parse_opts(int ac, char **av);
+
+t_lem_team_id	get_team_id(void);
+t_ai_id			translate_ai_id(char *ai_id_str);
+t_bin			get_ai(void);
+t_bin			post_parse_grapical(void);
+t_bin			post_parse_player(void);
+t_bin			post_parse(void);
+t_bin			parse_opts(int ac, char **av);
+
+// player/low.c
+
+void			loop_low(void);
 
 // player/main.c
-void				__loop(void);
-t_error				run_player(void);
+
+t_error			run_player(void);
+
+// player/random.c
+
+void			loop_random(void);
 
 // semaphore/board.c
-t_tile				*get_board(void);
-void				set_board(t_pos pos, t_tile tile);
+
+t_tile			*get_board(void);
+void			set_board(t_pos pos, t_tile tile);
 
 // semaphore/max_nb_player.c
-t_lem_player_id		inc_max_nb_player(void);
-t_lem_player_id		get_max_nb_player(void);
+
+t_lem_player_id	inc_max_nb_player(void);
+t_lem_player_id	get_max_nb_player(void);
 
 // semaphore/move_player.c
-t_bool				is_dead(t_pos pos, t_tile *board);
-t_bool				move_player(t_dir dir);
+
+t_bool			is_dead(t_pos pos, t_tile *board);
+t_bool			move_player(t_dir dir);
 
 // semaphore/nb_player.c
-t_lem_player_id		inc_nb_player(void);
-t_lem_player_id		dec_nb_player(void);
-t_lem_player_id		get_nb_player(void);
+
+t_lem_player_id	inc_nb_player(void);
+t_lem_player_id	dec_nb_player(void);
+t_lem_player_id	get_nb_player(void);
 
 // semaphore/pause.c
-void				lemipc_check_pause(void);
-void				lemipc_pause_toggle(void);
+
+void			lemipc_check_pause(void);
+void			lemipc_pause_toggle(void);
 
 // utils/mlx.1.c
-void				ft_put_pixel(t_pos pos, t_mlx_texture *image, t_int4 color);
-t_int4				get_team_color(t_uint8 team_id);
-void				put_cell(t_pos pos, t_lem_team_id team_id);
-void				wait_for_memory(void);
+
+void			ft_put_pixel(t_pos pos, t_mlx_texture *image, t_int4 color);
+t_int4			get_team_color(t_uint8 team_id);
+void			put_cell(t_pos pos, t_lem_team_id team_id);
+void			wait_for_memory(void);
 
 // utils/shared_memory.1.c
-int					get_sho_fd(char *name, t_size size, t_uint32 oflag, t_uint32 perm);
-void				*get_shm_ptr(int sho_fd, t_size size, t_uint32 prot, t_uint32 flag);
-void				*get_shared_memory(t_sho sho);
+
+int				get_sho_fd(char *name, t_size size, t_uint32 oflag, t_uint32 perm);
+void			*get_shm_ptr(int sho_fd, t_size size, t_uint32 prot, t_uint32 flag);
+void			*get_shared_memory(t_sho sho);
 
 // utils/sig_handler.1.c
-void				sig_handler(int sig);
+
+void			sig_handler(int sig);
 
 // semaphore/move_player.c
 /* ########################################################################## */

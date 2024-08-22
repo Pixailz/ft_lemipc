@@ -21,7 +21,7 @@ t_bool						IS_DEAD = FALSE;
 
 t_bool	is_dead(t_pos pos, t_tile *board)
 {
-	t_tile	tile[8];
+	t_tile	tile[8] = {0};
 	t_uint8	n;
 
 	t_bool	y_zero;
@@ -29,49 +29,33 @@ t_bool	is_dead(t_pos pos, t_tile *board)
 	t_bool	y_max;
 	t_bool	x_max;
 
-	y_zero = pos.y == 0;
-	x_zero = pos.x == 0;
-	y_max = pos.y == LEM_IPC_BOARD_LEN_Y - 1;
-	x_max = pos.x == LEM_IPC_BOARD_LEN_X - 1;
+	y_zero = pos.y != 0;
+	x_zero = pos.x != 0;
+	y_max = pos.y != LEM_IPC_BOARD_LEN_Y - 1;
+	x_max = pos.x != LEM_IPC_BOARD_LEN_X - 1;
 
 	if (y_zero)
-		tile[0] = (t_tile){0, 0};
-	else
 		tile[0] = board[pos.x + ((pos.y - 1) * LEM_IPC_BOARD_LEN_X)];
 
 	if (y_max)
-		tile[1] = (t_tile){0, 0};
-	else
 		tile[1] = board[pos.x + ((pos.y + 1) * LEM_IPC_BOARD_LEN_X)];
 
 	if (x_max || y_zero)
-		tile[2] = (t_tile){0, 0};
-	else
 		tile[2] = board[(pos.x + 1) + ((pos.y - 1) * LEM_IPC_BOARD_LEN_X)];
 
 	if (x_max)
-		tile[3] = (t_tile){0, 0};
-	else
 		tile[3] = board[(pos.x + 1) + (pos.y * LEM_IPC_BOARD_LEN_X)];
 
 	if (x_max || y_max)
-		tile[4] = (t_tile){0, 0};
-	else
 		tile[4] = board[(pos.x + 1) + ((pos.y + 1) * LEM_IPC_BOARD_LEN_X)];
 
 	if (x_zero || y_max)
-		tile[5] = (t_tile){0, 0};
-	else
 		tile[5] = board[(pos.x - 1) + ((pos.y + 1) * LEM_IPC_BOARD_LEN_X)];
 
 	if (x_zero)
-		tile[6] = (t_tile){0, 0};
-	else
 		tile[6] = board[(pos.x - 1) + (pos.y * LEM_IPC_BOARD_LEN_X)];
 
 	if (x_zero || y_zero)
-		tile[7] = (t_tile){0, 0};
-	else
 		tile[7] = board[(pos.x - 1) + ((pos.y - 1) * LEM_IPC_BOARD_LEN_X)];
 
 	for (int i = 1; i <= LEM_IPC_NB_TEAM; i++)
@@ -112,6 +96,7 @@ t_bool	move_player(t_dir dir)
 		ft_printf("OUT OF BOUNDS MOVE\n");
 		return (FALSE);
 	}
+	lemipc_check_pause();
 	board = get_board();
 	if (is_dead(POS, board))
 		return (TRUE);
@@ -120,7 +105,6 @@ t_bool	move_player(t_dir dir)
 		ft_printf("COLLISION\n");
 		return (FALSE);
 	}
-	lemipc_check_pause();
 	set_board(POS, (t_tile){0, 0});
 	set_board(tmp, (t_tile){TEAM_ID, MY_ID});
 	POS = tmp;
