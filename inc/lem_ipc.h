@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:14:17 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/06/17 14:09:55 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/26 09:32:35 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,17 @@
  * sem_init()
  */
 
+#include <mqueue.h>
+/* mqd_t
+ * mq_open()
+ */
+
 typedef t_uint8		t_lem_team_id;
 typedef t_uint16	t_lem_player_id;
 
 // # define	LEM_IPC_BOARD_LEN_X		200
 // # define	LEM_IPC_BOARD_LEN_Y		100
+
 # define	LEM_IPC_BOARD_LEN_X		50
 # define	LEM_IPC_BOARD_LEN_Y		25
 # define	LEM_IPC_BOARD_LEN		(LEM_IPC_BOARD_LEN_X * LEM_IPC_BOARD_LEN_Y)
@@ -57,10 +63,30 @@ typedef t_uint16	t_lem_player_id;
 # define	LEM_IPC_NB_TEAM			8
 # define 	LEM_IPC_FREQ			A_SEC / 10
 // # define 	LEM_IPC_FREQ			100
-// # define 	LEM_IPC_SCREEN_X		1920
-// # define 	LEM_IPC_SCREEN_Y		1080
-# define 	LEM_IPC_SCREEN_X		1920 / 2
-# define 	LEM_IPC_SCREEN_Y		1080 / 2
+
+typedef enum e_log_pos
+{
+	LOG_POS_DISABLE = 0,
+	LOG_POS_RIGHT = 1,
+	LOG_POS_LEFT = 2,
+	LOG_POS_TOP = 3,
+	LOG_POS_BOTTOM = 4
+}	t_log_pos;
+
+# define	LEM_IPC_LOG_SIZE_X			200
+# define	LEM_IPC_LOG_SIZE_Y			200
+# define	LEM_IPC_LOG_POS				LOG_POS_RIGHT
+
+# define	LEM_IPC_LOG_BACK			0x36454F
+# define	LEM_IPC_LOG_BORDER			0x33FF8D
+# define	LEM_IPC_LOG_FONT_COLOR		LEM_IPC_LOG_BORDER
+# define	LEM_IPC_LOG_FONT_SIZE_Y		12
+# define	LEM_IPC_LOG_FONT_SIZE_X		6
+# define	LEM_IPC_LOG_FONT_SPACING	3
+# define	LEM_IPC_LOG_FONT_UNIT_Y		LEM_IPC_LOG_FONT_SPACING + LEM_IPC_LOG_FONT_SIZE_Y
+# define	LEM_IPC_LOG_FONT_UNIT_X		LEM_IPC_LOG_FONT_SPACING + LEM_IPC_LOG_FONT_SIZE_X
+# define	LEM_IPC_LOG_HEADER_SIZE		4
+# define	LEM_IPC_LOG_FOOTER_SIZE		1
 
 # define	CELL_SIZE	8
 
@@ -203,14 +229,27 @@ void			free_mlx(void);
 
 void			free_player(void);
 
-// graphical/mlx/main.c
+// graphical/mlx/board.c
 
-int				end_hook(void *mlx);
-void			fill_board(void);
-int				handler_mlx(void *mlx);
+void			fill_board(t_tile *board);
+
+// graphical/mlx/key_press.c
+
+char			*key_code_to_str(int key_code);
 int				key_press(int key_code, void *mlx);
 int				key_release(int key_code, void *mlx);
+int				end_hook(void *mlx);
+
+// graphical/mlx/main.c
+
+int				handler_mlx(void *mlx);
 t_bin			run_graphical_mlx(void);
+
+// graphical/mlx/team.c
+
+void			mlx_log_put_team(t_tile *board);
+void			mlx_log_put_team_default_update_index(int *index, int to_add);
+void			mlx_log_put_team_default(void);
 
 // graphical/text/main.c
 
@@ -232,13 +271,21 @@ t_error			init_graphical(void);
 
 // init/graphical/mlx.c
 
-t_error			init_scene_border(t_size cell_size);
-t_error			init_scene(void);
+t_error			init_scene_board_border(t_size cell_size);
+void			init_scene_log_border(void);
+t_error			init_scene(t_mlx_texture *scene, t_pos size);
+t_error			init_scenes(void);
+void			get_screen_size(void);
 t_error			init_graphical_mlx(void);
 
 // init/main.c
 
 t_error			init_prog(void);
+
+// init/message_queue.c
+
+t_error			init_message_queue(mqd_t *msq, char *name);
+t_error			init_messages_queue(void);
 
 // init/player/main.c
 
@@ -327,8 +374,24 @@ void			lemipc_pause_toggle(void);
 
 void			ft_put_pixel(t_pos pos, t_mlx_texture *image, t_int4 color);
 t_int4			get_team_color(t_uint8 team_id);
-void			put_cell(t_pos pos, t_lem_team_id team_id);
+void			put_cell(t_pos pos, t_lem_team_id team_id, t_mlx_texture *scene);
 void			wait_for_memory(void);
+
+// utils/mlx_log/free.c
+
+void			mlx_log_free(char **log_str);
+
+// utils/mlx_log/init.c
+
+void			init_log_str(char ***log_str);
+
+// utils/mlx_log/main.c
+
+int				mlx_log_get_last_id(char **log_str);
+void			mlx_log_at(int lvl, char *msg, int color);
+void			mlx_log_move_up(char **log_str);
+t_bool			mlx_log(char *msg);
+t_size			print_mlx_log(const char *format, ...);
 
 // utils/shared_memory.1.c
 

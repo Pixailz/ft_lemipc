@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:20:46 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/06/17 10:52:37 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/25 00:10:04 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_int4	get_team_color(t_uint8 team_id)
 	return (COLOR[team_id]);
 }
 
-void	put_cell(t_pos pos, t_lem_team_id team_id)
+void	put_cell(t_pos pos, t_lem_team_id team_id, t_mlx_texture *scene)
 {
 	t_pos	ppos;
 	t_int4	color;
@@ -57,7 +57,7 @@ void	put_cell(t_pos pos, t_lem_team_id team_id)
 		ppos.x = (pos.x * CELL_SIZE) + 1;
 		while (ppos.x < (pos.x + 1) * CELL_SIZE)
 		{
-			ft_put_pixel(ppos, &SCENE, color);
+			ft_put_pixel(ppos, scene, color);
 			ppos.x++;
 		}
 		ppos.y++;

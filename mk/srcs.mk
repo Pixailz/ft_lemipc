@@ -2,12 +2,16 @@
 SRC_C := free/main.c \
 		 free/mlx.c \
 		 free/player.c \
+		 graphical/mlx/board.c \
+		 graphical/mlx/key_press.c \
 		 graphical/mlx/main.c \
+		 graphical/mlx/team.c \
 		 graphical/text/main.c \
 		 graphical/text/stat.c \
 		 init/graphical/main.c \
 		 init/graphical/mlx.c \
 		 init/main.c \
+		 init/message_queue.c \
 		 init/player/main.c \
 		 init/semaphore.c \
 		 init/shared_memory.c \
@@ -25,6 +29,9 @@ SRC_C := free/main.c \
 		 semaphore/nb_player.c \
 		 semaphore/pause.c \
 		 utils/mlx.1.c \
+		 utils/mlx_log/free.c \
+		 utils/mlx_log/init.c \
+		 utils/mlx_log/main.c \
 		 utils/shared_memory.1.c \
 		 utils/sig_handler.1.c
 

@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:00:58 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/06/16 17:29:29 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:59:30 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ t_error	init_prog(void)
 	if ((ret = init_shared_memory()))
 		return (ret);
 	if ((ret = init_semaphores()))
+		return (ret);
+	if ((ret = init_messages_queue()))
 		return (ret);
 	if (IS_GRAPHICAL)
 		init_graphical();

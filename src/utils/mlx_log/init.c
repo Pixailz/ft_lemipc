@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx.c                                              :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/16 14:08:34 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/25 02:23:35 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/08/25 00:50:16 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/08/25 06:59:10 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern void				*MLX;
-extern void				*WIN;
-extern t_mlx_texture	SCENE_BOARD;
-extern t_mlx_texture	SCENE_LOG;
+int	LEM_LOG_NB_LINE = -1;
 
-void	free_mlx(void)
+extern t_pos	LEM_IPC_LOG_WIDTH;
+
+void	init_log_str(char ***log_str)
 {
-	if (MLX)
-	{
-		if (WIN)
-			mlx_destroy_window(MLX, WIN);
-		mlx_destroy_image(MLX, SCENE_BOARD.ptr);
-		if (LEM_IPC_LOG_POS)
-			mlx_destroy_image(MLX, SCENE_LOG.ptr);
-		mlx_log(FT_NULL);
-		mlx_destroy_display(MLX);
-		free(MLX);
-	}
+	LEM_LOG_NB_LINE = LEM_IPC_LOG_WIDTH.y / (
+		LEM_IPC_LOG_FONT_SIZE_Y + LEM_IPC_LOG_FONT_SPACING
+	);
+	LEM_LOG_NB_LINE -= (LEM_IPC_LOG_HEADER_SIZE + LEM_IPC_LOG_FOOTER_SIZE);
+	*log_str = (char **)ft_calloc(sizeof(char *), LEM_LOG_NB_LINE + 1);
 }
