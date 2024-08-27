@@ -12,7 +12,15 @@
 
 #include "lem_ipc.h"
 
-extern t_ai_id AI_ID;
+extern t_ai_id	AI_ID;
+extern t_bool 	IS_SIGINT;
+extern t_bool 	IS_DEAD;
+
+t_bool	player_loop(void)
+{
+	lemipc_check_pause();
+	return (!IS_SIGINT && !IS_DEAD);
+}
 
 t_error	run_player(void)
 {

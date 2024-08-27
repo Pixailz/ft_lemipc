@@ -5,7 +5,10 @@ SRC_C := free/main.c \
 		 graphical/mlx/board.c \
 		 graphical/mlx/key_press.c \
 		 graphical/mlx/main.c \
-		 graphical/mlx/team.c \
+		 graphical/mlx/put_text.c \
+		 graphical/mlx/stats/default.c \
+		 graphical/mlx/stats/team.c \
+		 graphical/mlx/stats/total_nb.c \
 		 graphical/text/main.c \
 		 graphical/text/stat.c \
 		 init/graphical/main.c \

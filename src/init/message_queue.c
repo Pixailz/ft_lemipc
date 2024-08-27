@@ -33,8 +33,8 @@ t_error	init_message_queue(mqd_t *msq, char *name)
 
 t_error	init_messages_queue(void)
 {
-	t_error	retv;
-	mqd_t	test_1;
+	// t_error	retv;
+	// mqd_t	test_1;
 
 	// retv = init_message_queue(&test_1, "/test");
 

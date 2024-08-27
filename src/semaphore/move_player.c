@@ -96,7 +96,6 @@ t_bool	move_player(t_dir dir)
 		ft_printf("OUT OF BOUNDS MOVE\n");
 		return (FALSE);
 	}
-	lemipc_check_pause();
 	board = get_board();
 	if (is_dead(POS, board))
 		return (TRUE);

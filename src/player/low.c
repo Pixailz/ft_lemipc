@@ -12,15 +12,9 @@
 
 #include "lem_ipc.h"
 
-extern		t_bool 			IS_SIGINT;
-extern		t_bool 			IS_DEAD;
 
 void	loop_low(void)
 {
-	while (!IS_SIGINT && !IS_DEAD)
-	{
+	while (player_loop())
 		usleep(LEM_IPC_FREQ);
-		// while (!move_player(ft_randint(0, 4)))
-		// 	;
-	}
 }

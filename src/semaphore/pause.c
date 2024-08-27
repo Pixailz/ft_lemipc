@@ -46,7 +46,7 @@ void	lemipc_pause_toggle(void)
 		IS_PAUSED = FALSE;
 	}
 	print_mlx_log(
-		PAUSE_HEADER "%sNow %s",
+		PAUSE_HEADER "Now %s",
 		IS_PAUSED ? PAUSE_ENABLE : PAUSE_DISABLE
 	);
 }

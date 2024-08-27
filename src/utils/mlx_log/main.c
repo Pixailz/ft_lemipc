@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:50:16 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/25 06:57:15 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/27 12:02:18 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,7 @@ int	mlx_log_get_last_id(char **log_str)
 void	mlx_log_at(int lvl, char *msg, int color)
 {
 	lvl++;
-	mlx_string_put(
-		MLX, WIN,
-		ORIGIN_LOG.x + LEM_IPC_LOG_FONT_SPACING,
-		ORIGIN_LOG.y + LEM_IPC_LOG_FONT_UNIT_Y * (lvl + LEM_IPC_LOG_HEADER_SIZE),
-		color,
-		msg
-	);
+	mlxput_text_at(msg, color, (t_pos){1, lvl + LEM_IPC_LOG_HEADER_SIZE}, FALSE);
 }
 
 void	mlx_log_move_up(char **log_str)

@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:14:17 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/26 09:32:35 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/27 14:29:17 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,14 @@
 typedef t_uint8		t_lem_team_id;
 typedef t_uint16	t_lem_player_id;
 
-// # define	LEM_IPC_BOARD_LEN_X		200
-// # define	LEM_IPC_BOARD_LEN_Y		100
+# define	LEM_IPC_BOARD_LEN_X		100
+# define	LEM_IPC_BOARD_LEN_Y		100
 
-# define	LEM_IPC_BOARD_LEN_X		50
-# define	LEM_IPC_BOARD_LEN_Y		25
-# define	LEM_IPC_BOARD_LEN		(LEM_IPC_BOARD_LEN_X * LEM_IPC_BOARD_LEN_Y)
+# define	LEM_IPC_BOARD_LEN		LEM_IPC_BOARD_LEN_X * LEM_IPC_BOARD_LEN_Y
 # define	LEM_IPC_GRAPH_FPS_TEXT	10
-# define	LEM_IPC_GRAPH_FPS_MLX	144
+# define	LEM_IPC_GRAPH_FPS_MLX	60
 # define	LEM_IPC_NB_TEAM			8
 # define 	LEM_IPC_FREQ			A_SEC / 10
-// # define 	LEM_IPC_FREQ			100
 
 typedef enum e_log_pos
 {
@@ -72,23 +69,6 @@ typedef enum e_log_pos
 	LOG_POS_TOP = 3,
 	LOG_POS_BOTTOM = 4
 }	t_log_pos;
-
-# define	LEM_IPC_LOG_SIZE_X			200
-# define	LEM_IPC_LOG_SIZE_Y			200
-# define	LEM_IPC_LOG_POS				LOG_POS_RIGHT
-
-# define	LEM_IPC_LOG_BACK			0x36454F
-# define	LEM_IPC_LOG_BORDER			0x33FF8D
-# define	LEM_IPC_LOG_FONT_COLOR		LEM_IPC_LOG_BORDER
-# define	LEM_IPC_LOG_FONT_SIZE_Y		12
-# define	LEM_IPC_LOG_FONT_SIZE_X		6
-# define	LEM_IPC_LOG_FONT_SPACING	3
-# define	LEM_IPC_LOG_FONT_UNIT_Y		LEM_IPC_LOG_FONT_SPACING + LEM_IPC_LOG_FONT_SIZE_Y
-# define	LEM_IPC_LOG_FONT_UNIT_X		LEM_IPC_LOG_FONT_SPACING + LEM_IPC_LOG_FONT_SIZE_X
-# define	LEM_IPC_LOG_HEADER_SIZE		4
-# define	LEM_IPC_LOG_FOOTER_SIZE		1
-
-# define	CELL_SIZE	8
 
 # define	MLX_WHITE	0xFFFFFF
 # define	MLX_GRAY	0x808080
@@ -101,6 +81,33 @@ typedef enum e_log_pos
 # define	MLX_ORA		0xFFA500
 # define	MLX_PUR		0x800080
 # define	MLX_CYA		0x00FFFF
+
+# define	LEM_IPC_LOG_SIZE_X			300
+# define	LEM_IPC_LOG_SIZE_Y			400
+# define	LEM_IPC_LOG_POS				LOG_POS_BOTTOM
+
+# define	LEM_IPC_LOG_BACK			0x36454F
+# define	LEM_IPC_LOG_BORDER			0x33FF8D
+# define	LEM_IPC_LOG_FONT_COLOR		LEM_IPC_LOG_BORDER
+# define	LEM_IPC_LOG_FONT_SIZE_Y		11
+# define	LEM_IPC_LOG_FONT_SIZE_X		5
+# define	LEM_IPC_LOG_FONT_SPACING_Y  3
+# define	LEM_IPC_LOG_FONT_SPACING_X	1
+# define	LEM_IPC_LOG_FONT_UNIT_Y		(LEM_IPC_LOG_FONT_SPACING_Y + LEM_IPC_LOG_FONT_SIZE_Y)
+# define	LEM_IPC_LOG_FONT_UNIT_X		(LEM_IPC_LOG_FONT_SPACING_X + LEM_IPC_LOG_FONT_SIZE_X)
+# define	LEM_IPC_LOG_HEADER_SIZE		4
+# define	LEM_IPC_LOG_FOOTER_SIZE		1
+
+# define	LEM_IPC_LEN_NB_TEAM			5
+# define	LEM_IPC_LEN_TEAM_ID			1
+# define	LEM_IPC_TEAM_ID_SUFFIX	": "
+# define	LEM_IPC_LEN_TEAM_STR		(LEM_IPC_LEN_TEAM_ID + ft_strlen(LEM_IPC_TEAM_ID_SUFFIX))
+# define	LEM_IPC_LEN_TOTAL			(LEM_IPC_LEN_NB_TEAM + LEM_IPC_LEN_TEAM_STR)
+
+# define	LEM_IPC_LEN_NB_TOTAL		7
+# define	LEM_IPC_NB_TOTAL			"Total player: "
+
+# define	CELL_SIZE	6
 
 typedef struct __attribute__((__packed__)) s_tile
 {
@@ -245,11 +252,25 @@ int				end_hook(void *mlx);
 int				handler_mlx(void *mlx);
 t_bin			run_graphical_mlx(void);
 
-// graphical/mlx/team.c
+// graphical/mlx/put_text.c
 
-void			mlx_log_put_team(t_tile *board);
-void			mlx_log_put_team_default_update_index(int *index, int to_add);
+void			update_index_new_line(t_pos *pos);
+void			mlxput_text_at(char *msg, int color, t_pos pos, t_bool inv_y);
+
+// graphical/mlx/stats/default.c
+
 void			mlx_log_put_team_default(void);
+void			mlx_log_put_total_nb_default(void);
+
+// graphical/mlx/stats/team.c
+
+void			mlx_log_put_team_get_stat(t_tile *board, int *stats);
+void			mlx_log_put_stat_team(int *stat, int color);
+int				*mlx_log_put_stat(t_tile *board);
+
+// graphical/mlx/stats/total_nb.c
+
+void			mlx_log_put_total_nb(t_lem_ipc_mem mem);
 
 // graphical/text/main.c
 
@@ -338,6 +359,7 @@ void			loop_low(void);
 
 // player/main.c
 
+t_bool			player_loop(void);
 t_error			run_player(void);
 
 // player/random.c
@@ -346,6 +368,7 @@ void			loop_random(void);
 
 // semaphore/board.c
 
+t_lem_ipc_mem	get_mem(void);
 t_tile			*get_board(void);
 void			set_board(t_pos pos, t_tile tile);
 
@@ -383,6 +406,7 @@ void			mlx_log_free(char **log_str);
 
 // utils/mlx_log/init.c
 
+void			get_nb_log_line(void);
 void			init_log_str(char ***log_str);
 
 // utils/mlx_log/main.c
