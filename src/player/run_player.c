@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player.c                                           :+:      :+:    :+:   */
+/*   run_player.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/16 14:05:08 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/29 02:03:39 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/06/07 11:30:56 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/08/28 22:54:26 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_pos			POS;
-extern t_lem_ipc_mem	*LEM_IPC_MEM;
+extern t_ai_id	AI_ID;
+extern t_bool 	IS_SIGINT;
+extern t_bool 	IS_DEAD;
 
-void	free_player(void)
+t_bool	player_loop(void)
 {
-	t_lem_player_id	nb_player;
+	usleep(LEM_IPC_FREQ);
+	lemipc_check_pause();
+	return (!IS_SIGINT && !IS_DEAD);
+}
 
-	if (LEM_IPC_MEM == FT_NULL)
-		return ;
-	dec_nb_player();
-	set_board(POS, (t_tile){0, 0});
-	nb_player = get_nb_player();
-	ft_printf("FREE: nb_player = %d\n", nb_player);
-	if (!nb_player)
+t_error	run_player(void)
+{
+	switch (AI_ID)
 	{
-		unlink_semaphores();
-		unlink_message_queues();
-		shm_unlink(SHO_MEM_KEY);
+		case (RANDOM):
+			loop_random(); break ;
+		case (LOW):
+			loop_low(); break ;
 	}
+	return (SUCCESS);
 }

@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player.c                                           :+:      :+:    :+:   */
+/*   semaphore.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/16 14:05:08 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/29 02:03:39 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/08/28 21:35:16 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/08/28 22:32:48 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_pos			POS;
-extern t_lem_ipc_mem	*LEM_IPC_MEM;
+extern t_lem_ipc_sem	LEM_IPC_SEM;
 
-void	free_player(void)
+void	close_semaphores(void)
 {
-	t_lem_player_id	nb_player;
+	sem_close(LEM_IPC_SEM.nb_player);
+	sem_close(LEM_IPC_SEM.board);
+	sem_close(LEM_IPC_SEM.pause);
+	sem_close(LEM_IPC_SEM.max_nb_player);
+}
 
-	if (LEM_IPC_MEM == FT_NULL)
-		return ;
-	dec_nb_player();
-	set_board(POS, (t_tile){0, 0});
-	nb_player = get_nb_player();
-	ft_printf("FREE: nb_player = %d\n", nb_player);
-	if (!nb_player)
-	{
-		unlink_semaphores();
-		unlink_message_queues();
-		shm_unlink(SHO_MEM_KEY);
-	}
+void	unlink_semaphores(void)
+{
+	sem_unlink(get_semaphore_key("nb_player"));
+	sem_unlink(get_semaphore_key("board"));
+	sem_unlink(get_semaphore_key("pause"));
+	sem_unlink(get_semaphore_key("max_nb_player"));
 }

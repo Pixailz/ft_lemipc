@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/27 14:22:14 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/28 23:24:40 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	mlx_log_put_team_get_stat(t_tile *board, int *stats)
 		counter++;
 	}
 	counter = 0;
-	while (counter < LEM_IPC_BOARD_LEN_X * LEM_IPC_BOARD_LEN_Y)
+	while (counter < LEM_IPC_BOARD_LEN)
 	{
 		if (board[counter].team_id)
 		{

@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:35:15 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/06/16 17:32:25 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/30 10:28:03 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ static int	wait_for_player(char *name, t_uint32 oflag, t_uint32 perm)
 {
 	int	sho_fd;
 
-	sho_fd = shm_open(name, oflag, perm);
-	ft_printf("Waiting for player\n");
+	sho_fd = -1;
+	print_mlx_log("Waiting for players");
 	while (sho_fd == -1)
 	{
-		usleep(A_SEC / 10);
 		if (IS_SIGINT)
 			return (-1);
+		usleep(A_SEC / 10);
 		sho_fd = shm_open(name, oflag, perm);
 	}
-	ft_printf("Players arrived\n");
+	print_mlx_log("Player(s) has arrived");
 	return (sho_fd);
 }
 
@@ -42,7 +42,6 @@ int	get_sho_fd(char *name, t_size size, t_uint32 oflag, t_uint32 perm)
 	{
 		if (ft_strncmp(name, SHO_MEM_KEY, ft_strlen(SHO_MEM_KEY)) == 0)
 		{
-			// 	IS_MANAGED = FALSE;
 			if (IS_GRAPHICAL)
 				return (wait_for_player(name, oflag, perm));
 		}

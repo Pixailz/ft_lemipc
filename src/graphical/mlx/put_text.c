@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:06:04 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/27 14:22:00 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/29 00:39:22 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,12 @@ void	update_index_new_line(t_pos *pos)
 void	mlxput_text_at(char *msg, int color, t_pos pos, t_bool inv_y)
 {
 	pos.x *= LEM_IPC_LOG_FONT_UNIT_X;
-	pos.x += ORIGIN_LOG.x + LEM_IPC_LOG_FONT_SPACING_X;
+	pos.x += ORIGIN_LOG.x + LEM_IPC_LOG_FONT_SPACING_X + 1;
+	pos.y *= LEM_IPC_LOG_FONT_UNIT_Y;
+	pos.y += LEM_IPC_LOG_FONT_SPACING_Y + 1;
 	if (inv_y)
-	{
-		pos.y *= LEM_IPC_LOG_FONT_UNIT_Y;
-		pos.y += LEM_IPC_LOG_FONT_SPACING_Y + 1;
 		pos.y = (ORIGIN_LOG.y + LEM_IPC_LOG_WIDTH.y) - pos.y;
-	}
 	else
-	{
-		pos.y *= LEM_IPC_LOG_FONT_UNIT_Y;
-		pos.y += ORIGIN_LOG.y + LEM_IPC_LOG_FONT_SPACING_Y;
-	}
+		pos.y += ORIGIN_LOG.y;
 	mlx_string_put(MLX, WIN, pos.x, pos.y, color, msg);
 }

@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   init_graphical.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:30:56 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/06/17 13:49:38 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/06/16 14:14:15 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/08/30 11:10:19 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_ai_id	AI_ID;
-extern t_bool 	IS_SIGINT;
-extern t_bool 	IS_DEAD;
+extern	t_bool	IS_GRAPHICAL_TEXT;
 
-t_bool	player_loop(void)
+t_error	init_graphical(void)
 {
-	lemipc_check_pause();
-	return (!IS_SIGINT && !IS_DEAD);
-}
+	t_error	ret;
 
-t_error	run_player(void)
-{
-	switch (AI_ID)
+	if (!IS_GRAPHICAL_TEXT)
 	{
-		case (RANDOM):
-			loop_random(); break ;
-		case (LOW):
-			loop_low(); break ;
+		if ((ret = init_message_queues_graphical()))
+			return (ret);
+		if ((ret = init_graphical_mlx()))
+			return (ret);
 	}
 	return (SUCCESS);
 }

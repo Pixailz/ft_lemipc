@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:14:17 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/27 14:29:17 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/30 11:07:00 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,19 @@
 typedef t_uint8		t_lem_team_id;
 typedef t_uint16	t_lem_player_id;
 
-# define	LEM_IPC_BOARD_LEN_X		100
-# define	LEM_IPC_BOARD_LEN_Y		100
+# define	LEM_IPC_BOARD_LEN_X		25
+# define	LEM_IPC_BOARD_LEN_Y		25
+// # define	LEM_IPC_BOARD_LEN_X		50
+// # define	LEM_IPC_BOARD_LEN_Y		25
+// # define	LEM_IPC_BOARD_LEN_X		100
+// # define	LEM_IPC_BOARD_LEN_Y		100
 
-# define	LEM_IPC_BOARD_LEN		LEM_IPC_BOARD_LEN_X * LEM_IPC_BOARD_LEN_Y
+# define	LEM_IPC_BOARD_LEN		(LEM_IPC_BOARD_LEN_X * LEM_IPC_BOARD_LEN_Y)
 # define	LEM_IPC_GRAPH_FPS_TEXT	10
 # define	LEM_IPC_GRAPH_FPS_MLX	60
 # define	LEM_IPC_NB_TEAM			8
-# define 	LEM_IPC_FREQ			A_SEC / 10
+// # define 	LEM_IPC_FREQ			A_SEC / 10
+# define 	LEM_IPC_FREQ			A_SEC
 
 typedef enum e_log_pos
 {
@@ -84,7 +89,7 @@ typedef enum e_log_pos
 
 # define	LEM_IPC_LOG_SIZE_X			300
 # define	LEM_IPC_LOG_SIZE_Y			400
-# define	LEM_IPC_LOG_POS				LOG_POS_BOTTOM
+# define	LEM_IPC_LOG_POS				LOG_POS_RIGHT
 
 # define	LEM_IPC_LOG_BACK			0x36454F
 # define	LEM_IPC_LOG_BORDER			0x33FF8D
@@ -99,7 +104,7 @@ typedef enum e_log_pos
 # define	LEM_IPC_LOG_FOOTER_SIZE		1
 
 # define	LEM_IPC_LEN_NB_TEAM			5
-# define	LEM_IPC_LEN_TEAM_ID			1
+# define	LEM_IPC_LEN_TEAM_ID			3
 # define	LEM_IPC_TEAM_ID_SUFFIX	": "
 # define	LEM_IPC_LEN_TEAM_STR		(LEM_IPC_LEN_TEAM_ID + ft_strlen(LEM_IPC_TEAM_ID_SUFFIX))
 # define	LEM_IPC_LEN_TOTAL			(LEM_IPC_LEN_NB_TEAM + LEM_IPC_LEN_TEAM_STR)
@@ -107,7 +112,8 @@ typedef enum e_log_pos
 # define	LEM_IPC_LEN_NB_TOTAL		7
 # define	LEM_IPC_NB_TOTAL			"Total player: "
 
-# define	CELL_SIZE	6
+// # define	CELL_SIZE	6
+# define	CELL_SIZE	24
 
 typedef struct __attribute__((__packed__)) s_tile
 {
@@ -137,6 +143,12 @@ typedef	struct	s_pos
 	t_int16			y;
 }	t_pos;
 
+typedef	struct	s_vec
+{
+	t_pos			pos;
+	t_pos			dir;
+}	t_vec;
+
 typedef struct	s_mlx_texture
 {
 	void			*ptr;
@@ -164,6 +176,8 @@ typedef struct s_sho
 # define SHM_PROT			PROT_READ | PROT_WRITE
 # define SHM_FLAG			MAP_SHARED
 
+# define SHO_SEM_KEY		"lem-ipc_sem"
+# define SHO_MSQ_KEY		"lem-ipc_messsage_queue"
 
 typedef enum e_error
 {
@@ -172,6 +186,7 @@ typedef enum e_error
 	ERR_SHM_PTR,
 	ERR_SIGNAL,
 	ERR_SEM_INIT,
+	ERR_MSQ_INIT,
 	ERR_PARSING,
 	ERR_INIT_MLX,
 	ERR_INIT_MLX_WIN,
@@ -224,9 +239,14 @@ typedef struct s_ai_id_list
 /* FILES */
 /* ##### */
 
-// free/main.c
+// free/free.c
 
 void			free_prog(void);
+
+// free/message_queue.c
+
+void			unlink_message_queues(void);
+void			close_message_queues(void);
 
 // free/mlx.c
 
@@ -235,6 +255,11 @@ void			free_mlx(void);
 // free/player.c
 
 void			free_player(void);
+
+// free/semaphore.c
+
+void			close_semaphores(void);
+void			unlink_semaphores(void);
 
 // graphical/mlx/board.c
 
@@ -249,13 +274,16 @@ int				end_hook(void *mlx);
 
 // graphical/mlx/main.c
 
-int				handler_mlx(void *mlx);
-t_bin			run_graphical_mlx(void);
 
 // graphical/mlx/put_text.c
 
 void			update_index_new_line(t_pos *pos);
 void			mlxput_text_at(char *msg, int color, t_pos pos, t_bool inv_y);
+
+// graphical/mlx/run_mlx.c
+
+int				handler_mlx(void *mlx);
+t_bin			run_graphical_mlx(void);
 
 // graphical/mlx/stats/default.c
 
@@ -270,9 +298,9 @@ int				*mlx_log_put_stat(t_tile *board);
 
 // graphical/mlx/stats/total_nb.c
 
-void			mlx_log_put_total_nb(t_lem_ipc_mem mem);
+void			mlx_log_put_total_nb(void);
 
-// graphical/text/main.c
+// graphical/text/run_text.c
 
 char			*text_get_team_color(t_lem_team_id team_id);
 t_size			print_tile_color(t_lem_team_id team_id, char *line);
@@ -286,11 +314,15 @@ t_error			run_graphical_text(void);
 
 void			graphical_text_print_stat(t_tile *board);
 
-// init/graphical/main.c
+// init/init.c
+
+t_error			init_prog(void);
+
+// init/init_graphical.c
 
 t_error			init_graphical(void);
 
-// init/graphical/mlx.c
+// init/init_graphical_mlx.c
 
 t_error			init_scene_board_border(t_size cell_size);
 void			init_scene_log_border(void);
@@ -299,23 +331,26 @@ t_error			init_scenes(void);
 void			get_screen_size(void);
 t_error			init_graphical_mlx(void);
 
-// init/main.c
-
-t_error			init_prog(void);
-
-// init/message_queue.c
-
-t_error			init_message_queue(mqd_t *msq, char *name);
-t_error			init_messages_queue(void);
-
-// init/player/main.c
+// init/init_player.c
 
 t_error			get_random_pos(void);
 t_error			init_player(void);
 
+// init/message_queue.c
+
+t_error			init_message_queue(mqd_t *msq, char *name);
+char			*get_message_queue_key(t_lem_team_id team_id);
+t_error			init_message_queues(void);
+
+// init/message_queue_graphical.c
+
+t_error			init_message_queue_graphical(mqd_t *msq, char *name);
+t_error			init_message_queues_graphical(void);
+
 // init/semaphore.c
 
 t_error			init_semaphore(sem_t **sem, char *name, int value);
+char			*get_semaphore_key(char *key);
 t_error			init_semaphores(void);
 
 // init/shared_memory.c
@@ -355,22 +390,28 @@ t_bin			parse_opts(int ac, char **av);
 
 // player/low.c
 
+int				get_tile_team_id(t_tile *board, t_pos pos);
+t_pos			get_nearest_line(t_tile *board, t_vec vec, int index, int mode);
+t_pos			get_nearest_column(t_tile *board, t_vec vec, int index, int mode);
+t_pos			get_nearest_player(t_tile *board, int mode);
+void			computed_move(t_vec next_move);
 void			loop_low(void);
 
-// player/main.c
+// player/random.c
+
+void			random_move(void);
+void			loop_random(void);
+
+// player/run_player.c
 
 t_bool			player_loop(void);
 t_error			run_player(void);
 
-// player/random.c
-
-void			loop_random(void);
-
 // semaphore/board.c
 
-t_lem_ipc_mem	get_mem(void);
 t_tile			*get_board(void);
 void			set_board(t_pos pos, t_tile tile);
+void			set_board_move(t_pos from, t_pos to, t_tile tile);
 
 // semaphore/max_nb_player.c
 
@@ -393,11 +434,20 @@ t_lem_player_id	get_nb_player(void);
 void			lemipc_check_pause(void);
 void			lemipc_pause_toggle(void);
 
+// utils/is_player_here.c
+
+t_bool			is_here(char *prefix, char *name, int mode);
+t_bool			is_shm_here(char *name);
+t_bool			is_sem_here(char *name);
+t_bool			is_msq_here(char *name);
+t_bool			is_player_here(void);
+
 // utils/mlx.1.c
 
 void			ft_put_pixel(t_pos pos, t_mlx_texture *image, t_int4 color);
 t_int4			get_team_color(t_uint8 team_id);
 void			put_cell(t_pos pos, t_lem_team_id team_id, t_mlx_texture *scene);
+t_bool			wait_for_player_2(void);
 void			wait_for_memory(void);
 
 // utils/mlx_log/free.c
@@ -409,7 +459,7 @@ void			mlx_log_free(char **log_str);
 void			get_nb_log_line(void);
 void			init_log_str(char ***log_str);
 
-// utils/mlx_log/main.c
+// utils/mlx_log/mlx_log.c
 
 int				mlx_log_get_last_id(char **log_str);
 void			mlx_log_at(int lvl, char *msg, int color);

@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:09:53 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/27 09:41:36 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/28 21:26:13 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ t_error	init_graphical_mlx(void)
 	if (!MLX)
 		return (ERR_INIT_MLX);
 	get_screen_size();
-	get_nb_log_line();
 	WIN = mlx_new_window(MLX, LEM_IPC_SCREEN.x, LEM_IPC_SCREEN.y, "lem_ipc");
 	if (!WIN)
 		return (ERR_INIT_MLX_WIN);

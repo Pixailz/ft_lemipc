@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:50:16 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/27 12:02:18 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/28 21:26:31 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,13 @@ t_bool	mlx_log(char *msg)
 	if (msg == FT_NULL)
 	{
 		mlx_log_free(log_str);
-		return TRUE;
+		return (TRUE);
 	}
 	if (log_str == FT_NULL)
 	{
 		init_log_str(&log_str);
 		print_mlx_log("[MLX_LOG]: NB_LINE {%d}", LEM_LOG_NB_LINE);
-		return TRUE;
+		return (TRUE);
 	}
 	id = mlx_log_get_last_id(log_str);
 	if (id == LEM_LOG_NB_LINE)
@@ -83,7 +83,7 @@ t_bool	mlx_log(char *msg)
 		mlx_log_at(id, log_str[id], LEM_IPC_LOG_BACK);
 	log_str[id] = ft_strdup(msg);
 	mlx_log_at(id, log_str[id], LEM_IPC_LOG_FONT_COLOR);
-	return FALSE;
+	return (FALSE);
 }
 
 t_size	print_mlx_log(const char *format, ...)

@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 15:14:53 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/06/16 19:23:55 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/29 02:06:22 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,7 @@ t_bool	move_player(t_dir dir)
 		ft_printf("COLLISION\n");
 		return (FALSE);
 	}
-	set_board(POS, (t_tile){0, 0});
-	set_board(tmp, (t_tile){TEAM_ID, MY_ID});
+	set_board_move(POS, tmp, (t_tile){TEAM_ID, MY_ID});
 	POS = tmp;
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:01:51 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/06/16 17:38:02 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/30 10:40:03 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ t_error	init_shared_memory(void)
 
 	if ((ret = init_shared_memory_mem()))
 		return (ret);
+	ft_printf("smh_init: succeed /dev/shm%s\n", SHO_MEM_KEY);
 	return (SUCCESS);
 }

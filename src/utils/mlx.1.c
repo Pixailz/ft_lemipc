@@ -6,16 +6,12 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:20:46 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/25 00:10:04 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/30 10:30:01 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern void				*MLX;
-extern void				*WIN;
-extern t_mlx_texture	SCENE;
-extern t_lem_ipc_sem	LEM_IPC_SEM;
 extern t_bool			IS_SIGINT;
 
 void	ft_put_pixel(t_pos pos, t_mlx_texture *image, t_int4 color)
@@ -64,17 +60,34 @@ void	put_cell(t_pos pos, t_lem_team_id team_id, t_mlx_texture *scene)
 	}
 }
 
+
+t_bool	wait_for_player_2(void)
+{
+	if (is_player_here())
+	{
+		print_mlx_log("Player has arrived");
+		return TRUE;
+	}
+	close_semaphores();
+	close_message_queues();
+	while (!IS_SIGINT && !is_player_here())
+		usleep(A_SEC / 3);
+	return FALSE;
+}
+
 void	wait_for_memory(void)
 {
+	// if (wait_for_player_2())
+	// 	return ;
 	if (!get_nb_player())
 	{
 		init_shared_memory();
 		if (!IS_SIGINT)
 		{
-			sem_close(LEM_IPC_SEM.nb_player);
-			sem_close(LEM_IPC_SEM.board);
-			sem_close(LEM_IPC_SEM.pause);
+			close_semaphores();
+			close_message_queues();
 			init_semaphores();
+			init_message_queues_graphical();
 		}
 	}
 }

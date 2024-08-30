@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 00:50:16 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/27 09:54:10 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/28 21:09:46 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ void	get_nb_log_line(void)
 
 void	init_log_str(char ***log_str)
 {
+	get_nb_log_line();
 	*log_str = (char **)ft_calloc(sizeof(char *), LEM_LOG_NB_LINE + 1);
 }
