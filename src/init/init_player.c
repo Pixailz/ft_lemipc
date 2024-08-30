@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:15:31 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/30 11:11:12 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:58:17 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_error	init_player(void)
 {
 	t_error ret;
 
-	if ((ret = init_message_queues_graphical()))
+	if ((ret = init_message_queues()))
 		return (ret);
 	MY_ID = inc_nb_player();
 	inc_max_nb_player();

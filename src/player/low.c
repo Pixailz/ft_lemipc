@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:30:56 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/29 00:40:22 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:05:31 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,39 +132,53 @@ static t_vec	compute_move(t_tile *board)
 {
 	t_vec vec;
 
+	vec.dir.x = 0;
+	vec.dir.y = 0;
 	vec.pos = get_nearest_player(board, 1);
 	if (vec.pos.x == -1 && vec.pos.y == -1)
 	{
 		ft_printf("(%02d,%02d) NO ENEMY FOUND\n", POS.x, POS.y);
 		return (vec);
 	}
+	vec.dir.x = vec.pos.x - POS.x;
+	vec.dir.y = vec.pos.y - POS.y;
 	ft_printf("(%02d,%02d) ENEMY FOUND\n", vec.pos.x, vec.pos.y);
 	return (vec);
 }
 
-void	computed_move(t_vec next_move)
+static void	computed_move(t_vec next_move)
 {
-	if (next_move.dir.x == 1)
-		move_player(RIGHT);
-	else if (next_move.dir.x == -1)
-		move_player(LEFT);
-	else if (next_move.dir.y == 1)
-		move_player(DOWN);
-	else if (next_move.dir.y == -1)
-		move_player(UP);
-	else
+	t_pos	tmp;
+
+	if (next_move.dir.x == 0 && next_move.dir.y == 0)
+	{
 		random_move();
+		return ;
+	}
+	tmp.x = next_move.dir.x;
+	if (next_move.dir.x < 0)
+		tmp.x = -next_move.dir.x;
+	tmp.y = next_move.dir.y;
+	if (next_move.dir.y < 0)
+		tmp.y = -next_move.dir.y;
+	if (tmp.x > tmp.y)
+	{
+		if (next_move.dir.x > 0)
+			move_player(RIGHT);
+		else if (next_move.dir.x < 0)
+			move_player(LEFT);
+	}
+	else
+	{
+		if (next_move.dir.y > 0)
+			move_player(DOWN);
+		else if (next_move.dir.y < 0)
+			move_player(UP);
+
+	}
 }
 
 void	loop_low(void)
 {
-	t_tile	*board;
-	t_vec	next_move;
-
-	while (player_loop())
-	{
-		board = get_board();
-		next_move = compute_move(board);
-		computed_move(next_move);
-	}
+	computed_move(compute_move(get_board()));
 }

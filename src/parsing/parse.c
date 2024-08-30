@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 01:01:15 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/06/16 16:17:19 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:22:45 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@ t_bool			IS_GRAPHICAL_TEXT = FALSE;
 t_lem_team_id	TEAM_ID = 0;
 t_ai_id			AI_ID = 0;
 
-t_ai_id_list AI_ID_LIST[2] = {
+# define NB_AI	3
+
+t_ai_id_list	AI_ID_LIST[NB_AI] = {
 	{RANDOM,	"rand"},
 	{LOW,		"low"},
+	{MEDIUM,	"medium"},
 };
 
 t_lem_team_id	get_team_id(void)
@@ -56,13 +59,13 @@ t_ai_id translate_ai_id(char *ai_id_str)
 	int				counter;
 
 	counter = 0;
-	while (counter < 2)
+	while (counter < NB_AI)
 	{
 		if (!ft_strcmp(AI_ID_LIST[counter].str, ai_id_str))
 			return (AI_ID_LIST[counter].id);
 		counter++;
 	}
-	return (-1);
+	return (RANDOM);
 }
 
 t_bin get_ai(void)

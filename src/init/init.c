@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:00:58 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/30 11:10:59 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:57:06 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_error	init_prog(void)
 		return (ret);
 	if (IS_GRAPHICAL)
 	{
-		if ((ret) = init_graphical())
+		if ((ret = init_graphical()))
 			return (ret);
 	}
 	else

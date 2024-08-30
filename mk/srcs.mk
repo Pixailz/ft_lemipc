@@ -6,7 +6,6 @@ SRC_C := free/free.c \
 		 free/semaphore.c \
 		 graphical/mlx/board.c \
 		 graphical/mlx/key_press.c \
-		 graphical/mlx/main.c \
 		 graphical/mlx/put_text.c \
 		 graphical/mlx/run_mlx.c \
 		 graphical/mlx/stats/default.c \
@@ -28,6 +27,7 @@ SRC_C := free/free.c \
 		 parsing/cmd/usage.c \
 		 parsing/parse.c \
 		 player/low.c \
+		 player/medium.c \
 		 player/random.c \
 		 player/run_player.c \
 		 semaphore/board.c \

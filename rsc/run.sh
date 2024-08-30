@@ -39,8 +39,8 @@ fi
 for id in $(seq 1 "${NB_PLAYERS}"); do
 	for team in "${TEAMS[@]}"; do
 		printf "Starting player %d for team %d\n" "${id}" "${team}"
-		# "${PROG}" "${team}" "${AI}" >& "${DIR_LOG}/runner_${team}_${id}" &
-		"${PROG}" "${team}" "${AI}" >/dev/null &
+		"${PROG}" "${team}" "${AI}" >& "${DIR_LOG}/runner_${team}_${id}" &
+		# "${PROG}" "${team}" "${AI}" >/dev/null &
 	done
 done
 

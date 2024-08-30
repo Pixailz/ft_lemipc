@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:14:17 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/30 11:07:00 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:21:38 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@
 typedef t_uint8		t_lem_team_id;
 typedef t_uint16	t_lem_player_id;
 
-# define	LEM_IPC_BOARD_LEN_X		25
-# define	LEM_IPC_BOARD_LEN_Y		25
-// # define	LEM_IPC_BOARD_LEN_X		50
+// # define	LEM_IPC_BOARD_LEN_X		25
 // # define	LEM_IPC_BOARD_LEN_Y		25
+# define	LEM_IPC_BOARD_LEN_X		50
+# define	LEM_IPC_BOARD_LEN_Y		50
 // # define	LEM_IPC_BOARD_LEN_X		100
 // # define	LEM_IPC_BOARD_LEN_Y		100
 
@@ -63,8 +63,9 @@ typedef t_uint16	t_lem_player_id;
 # define	LEM_IPC_GRAPH_FPS_TEXT	10
 # define	LEM_IPC_GRAPH_FPS_MLX	60
 # define	LEM_IPC_NB_TEAM			8
-// # define 	LEM_IPC_FREQ			A_SEC / 10
-# define 	LEM_IPC_FREQ			A_SEC
+# define 	LEM_IPC_FREQ			A_SEC / 10
+// # define 	LEM_IPC_FREQ			A_SEC / 2
+// # define 	LEM_IPC_FREQ			A_SEC
 
 typedef enum e_log_pos
 {
@@ -113,7 +114,8 @@ typedef enum e_log_pos
 # define	LEM_IPC_NB_TOTAL			"Total player: "
 
 // # define	CELL_SIZE	6
-# define	CELL_SIZE	24
+# define	CELL_SIZE	16
+// # define	CELL_SIZE	24
 
 typedef struct __attribute__((__packed__)) s_tile
 {
@@ -182,6 +184,7 @@ typedef struct s_sho
 typedef enum e_error
 {
 	SUCCESS,
+	SUCCESS_CMD,
 	ERR_SHO_FD,
 	ERR_SHM_PTR,
 	ERR_SIGNAL,
@@ -207,6 +210,7 @@ typedef enum e_ai_id
 {
 	RANDOM = 0,
 	LOW = 1,
+	MEDIUM = 2,
 }	t_ai_id;
 
 typedef struct s_ai_id_list
@@ -234,6 +238,8 @@ typedef struct s_ai_id_list
 		// ARROW
 # define KEY_RIGHT						0xff53
 # define KEY_LEFT						0xff51
+
+# define MAX_ITER (LEM_IPC_BOARD_LEN_X > LEM_IPC_BOARD_LEN_Y ? LEM_IPC_BOARD_LEN_X : LEM_IPC_BOARD_LEN_Y)
 
 /* ########################################################################## */
 /* FILES */
@@ -271,9 +277,6 @@ char			*key_code_to_str(int key_code);
 int				key_press(int key_code, void *mlx);
 int				key_release(int key_code, void *mlx);
 int				end_hook(void *mlx);
-
-// graphical/mlx/main.c
-
 
 // graphical/mlx/put_text.c
 
@@ -394,13 +397,15 @@ int				get_tile_team_id(t_tile *board, t_pos pos);
 t_pos			get_nearest_line(t_tile *board, t_vec vec, int index, int mode);
 t_pos			get_nearest_column(t_tile *board, t_vec vec, int index, int mode);
 t_pos			get_nearest_player(t_tile *board, int mode);
-void			computed_move(t_vec next_move);
 void			loop_low(void);
+
+// player/medium.c
+
+void			loop_medium(void);
 
 // player/random.c
 
 void			random_move(void);
-void			loop_random(void);
 
 // player/run_player.c
 

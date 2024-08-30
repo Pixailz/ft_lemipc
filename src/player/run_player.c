@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:30:56 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/28 22:54:26 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:22:04 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,18 @@ t_bool	player_loop(void)
 
 t_error	run_player(void)
 {
+	void	(*func)(void) = FT_NULL;
+
 	switch (AI_ID)
 	{
 		case (RANDOM):
-			loop_random(); break ;
+			func = random_move; break ;
 		case (LOW):
-			loop_low(); break ;
+			func = loop_low; break ;
+		case (MEDIUM):
+			func = loop_medium; break ;
 	}
+	while (player_loop())
+		func();
 	return (SUCCESS);
 }
