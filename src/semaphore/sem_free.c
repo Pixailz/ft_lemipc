@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   sem.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 17:56:23 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/08/28 21:35:16 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/08/31 17:41:37 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_mlx_texture	SCENE_BOARD;
+extern t_lem_ipc_sem	LEM_IPC_SEM;
 
-void	fill_board(t_tile *board)
+void	close_sems(void)
 {
-	t_pos			pos;
+	sem_close(LEM_IPC_SEM.player_nb);
+	sem_close(LEM_IPC_SEM.board);
+	sem_close(LEM_IPC_SEM.pause);
+	sem_close(LEM_IPC_SEM.max_player_nb);
+}
 
-	pos.y = 0;
-	while (pos.y < LEM_IPC_BOARD_LEN_Y)
-	{
-		pos.x = 0;
-		while (pos.x < LEM_IPC_BOARD_LEN_X)
-		{
-			put_cell(
-				pos,
-				board[pos.x + pos.y * LEM_IPC_BOARD_LEN_X].team_id,
-				&SCENE_BOARD
-			);
-			pos.x++;
-		}
-		pos.y++;
-	}
+void	unlink_sems(void)
+{
+	sem_unlink(get_sem_key("player_nb"));
+	sem_unlink(get_sem_key("board"));
+	sem_unlink(get_sem_key("pause"));
+	sem_unlink(get_sem_key("max_player_nb"));
 }

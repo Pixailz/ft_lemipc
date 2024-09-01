@@ -1,36 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   msq_get_attack.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 17:56:23 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/09/01 19:37:20 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/09/01 19:40:37 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_mlx_texture	SCENE_BOARD;
-
-void	fill_board(t_tile *board)
+t_msq_atk	*msq_get_attack(void)
 {
-	t_pos			pos;
+	char	*buff;
+	size_t	*buff_len;
 
-	pos.y = 0;
-	while (pos.y < LEM_IPC_BOARD_LEN_Y)
-	{
-		pos.x = 0;
-		while (pos.x < LEM_IPC_BOARD_LEN_X)
-		{
-			put_cell(
-				pos,
-				board[pos.x + pos.y * LEM_IPC_BOARD_LEN_X].team_id,
-				&SCENE_BOARD
-			);
-			pos.x++;
-		}
-		pos.y++;
-	}
+	buff = sing_msq_buff();
+	buff_len = sing_msq_buff_len();
+	if (*buff_len < MSQ_SIZE_HDR + MSQ_SIZE_ATK)
+		return (FT_NULL);
+	return ((t_msq_atk *)(buff + MSQ_SIZE_HDR));
 }

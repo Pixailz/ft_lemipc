@@ -1,36 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   sing_msq_buff.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 17:56:23 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/08/28 22:01:40 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/09/01 19:38:49 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_mlx_texture	SCENE_BOARD;
-
-void	fill_board(t_tile *board)
+char	*sing_msq_buff(void)
 {
-	t_pos			pos;
+	static char	buff[MSQ_SIZE_MAX] = {0};
 
-	pos.y = 0;
-	while (pos.y < LEM_IPC_BOARD_LEN_Y)
-	{
-		pos.x = 0;
-		while (pos.x < LEM_IPC_BOARD_LEN_X)
-		{
-			put_cell(
-				pos,
-				board[pos.x + pos.y * LEM_IPC_BOARD_LEN_X].team_id,
-				&SCENE_BOARD
-			);
-			pos.x++;
-		}
-		pos.y++;
-	}
+	return (buff);
+}
+
+size_t	*sing_msq_buff_len(void)
+{
+	static size_t	buff = 0;
+
+	return (&buff);
 }

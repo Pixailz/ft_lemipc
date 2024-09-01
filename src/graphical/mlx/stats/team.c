@@ -6,17 +6,11 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/28 23:24:40 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/09/01 15:42:27 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
-
-extern	void*	MLX;
-extern	void*	WIN;
-
-extern	t_pos	LEM_IPC_LOG_WIDTH;
-extern	t_pos	ORIGIN_LOG;
 
 void	mlx_log_put_team_get_stat(t_tile *board, int *stats)
 {
@@ -70,6 +64,6 @@ int	*mlx_log_put_stat(t_tile *board)
 
 	mlx_log_put_stat_team(last_stats, LEM_IPC_LOG_BACK);
 	mlx_log_put_team_get_stat(board, last_stats);
-	mlx_log_put_stat_team(last_stats, LEM_IPC_LOG_FONT_COLOR);
+	mlx_log_put_stat_team(last_stats, MLX_FONT_COLOR);
 	return last_stats;
 }

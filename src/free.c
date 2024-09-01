@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 17:56:23 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/06/16 14:04:17 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/09/01 19:44:49 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_mlx_texture	SCENE_BOARD;
+extern	t_bool			IS_GRAPHICAL;
+extern	t_bool			IS_GRAPHICAL_TEXT;
+extern t_lem_ipc_sem	LEM_IPC_SEM;
 
-void	fill_board(t_tile *board)
+void	free_prog(void)
 {
-	t_pos			pos;
-
-	pos.y = 0;
-	while (pos.y < LEM_IPC_BOARD_LEN_Y)
+	if (IS_GRAPHICAL)
 	{
-		pos.x = 0;
-		while (pos.x < LEM_IPC_BOARD_LEN_X)
-		{
-			put_cell(
-				pos,
-				board[pos.x + pos.y * LEM_IPC_BOARD_LEN_X].team_id,
-				&SCENE_BOARD
-			);
-			pos.x++;
-		}
-		pos.y++;
+		if (!IS_GRAPHICAL_TEXT)
+			free_mlx();
 	}
+	else
+		free_player();
+	close_sems();
+	close_msqs();
 }

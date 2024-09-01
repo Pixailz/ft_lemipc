@@ -1,50 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   init_graphical.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/01 03:26:32 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/01 16:25:46 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/06/16 14:14:15 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/09/01 19:41:29 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern	t_bool	IS_GRAPHICAL;
 extern	t_bool	IS_GRAPHICAL_TEXT;
 
-t_bin	run(int ac, char **av)
+t_error	init_graphical(void)
 {
-	int	ret;
+	t_error	ret;
 
-	ret = parse_opts(ac, av);
-	if (ret == BIT_01)
-		return (ft_opt_exec_cmd());
-	else if (ret != SUCCESS)
+	if ((ret = init_msqs_graphical()))
 		return (ret);
-	if ((ret = init_prog()))
-		return (ret);
-	if (IS_GRAPHICAL)
+	if (!IS_GRAPHICAL_TEXT)
 	{
-		if (IS_GRAPHICAL_TEXT)
-			ret = run_graphical_text();
-		else
-			ret = run_graphical_mlx();
+		if ((ret = init_graphical_mlx()))
+			return (ret);
 	}
-	else
-	{
-		ret = run_player();
-	}
-	return (ret);
-}
-
-int	main(int ac, char **av)
-{
-	char	ret;
-
-	ret = run(ac, av);
-	free_prog();
-	return (ret);
+	return (SUCCESS);
 }

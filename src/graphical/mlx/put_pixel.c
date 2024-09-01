@@ -1,36 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   put_pixel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 17:56:23 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/06/16 14:20:46 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/08/31 17:50:20 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_mlx_texture	SCENE_BOARD;
-
-void	fill_board(t_tile *board)
+void	ft_put_pixel(t_pos pos, t_mlx_texture *image, t_int4 color)
 {
-	t_pos			pos;
+	int	point;
 
-	pos.y = 0;
-	while (pos.y < LEM_IPC_BOARD_LEN_Y)
-	{
-		pos.x = 0;
-		while (pos.x < LEM_IPC_BOARD_LEN_X)
-		{
-			put_cell(
-				pos,
-				board[pos.x + pos.y * LEM_IPC_BOARD_LEN_X].team_id,
-				&SCENE_BOARD
-			);
-			pos.x++;
-		}
-		pos.y++;
-	}
+	if (pos.x < 0 || pos.y < 0)
+		return ;
+	point = pos.x + pos.y * (image->line_len / 4);
+	image->buff[point] = color;
+	return ;
 }

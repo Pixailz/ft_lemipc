@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   msq_send.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 17:56:23 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/08/28 22:01:40 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/09/01 19:19:08 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_mlx_texture	SCENE_BOARD;
+extern mqd_t			LEM_IPC_MSQ[LEM_IPC_NB_TEAM];
+extern t_lem_team_id	TEAM_ID;
+extern t_pos			POS;
 
-void	fill_board(t_tile *board)
+t_bool	msq_send_attack(t_pos enemy_pos)
 {
-	t_pos			pos;
+	size_t		*buff_len;
+	t_msq_hdr	*msg_hdr;
+	t_msq_atk	*msg_atk;
 
-	pos.y = 0;
-	while (pos.y < LEM_IPC_BOARD_LEN_Y)
-	{
-		pos.x = 0;
-		while (pos.x < LEM_IPC_BOARD_LEN_X)
-		{
-			put_cell(
-				pos,
-				board[pos.x + pos.y * LEM_IPC_BOARD_LEN_X].team_id,
-				&SCENE_BOARD
-			);
-			pos.x++;
-		}
-		pos.y++;
-	}
+	buff_len = sing_msq_buff_len();
+	*buff_len = MSQ_SIZE_HDR + MSQ_SIZE_ATK;
+	msg_hdr = msq_get_hdr();
+	msg_hdr->type = MSQ_TYPE_ATK;
+	msg_atk = msq_get_attack();
+	msg_atk->attacker = POS;
+	msg_atk->target = enemy_pos;
+	return (msq_send());
 }

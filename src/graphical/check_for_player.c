@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   check_for_player.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 17:56:23 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/06/16 14:20:46 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/09/01 19:44:49 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_mlx_texture	SCENE_BOARD;
+extern t_bool			IS_SIGINT;
 
-void	fill_board(t_tile *board)
+void	check_for_player(void)
 {
-	t_pos			pos;
-
-	pos.y = 0;
-	while (pos.y < LEM_IPC_BOARD_LEN_Y)
+	if (!get_player_nb())
 	{
-		pos.x = 0;
-		while (pos.x < LEM_IPC_BOARD_LEN_X)
+		init_shm();
+		if (!IS_SIGINT)
 		{
-			put_cell(
-				pos,
-				board[pos.x + pos.y * LEM_IPC_BOARD_LEN_X].team_id,
-				&SCENE_BOARD
-			);
-			pos.x++;
+			close_sems();
+			close_msqs();
+			init_sems();
+			init_msqs_graphical();
 		}
-		pos.y++;
 	}
 }

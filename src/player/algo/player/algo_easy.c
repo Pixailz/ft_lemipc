@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   algo_easy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 17:56:23 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/06/07 11:30:56 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/09/01 19:25:53 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_mlx_texture	SCENE_BOARD;
+extern t_pos	POS;
 
-void	fill_board(t_tile *board)
+t_vec	handler_move_easy(t_tile *board)
 {
-	t_pos			pos;
+	t_vec enemy;
 
-	pos.y = 0;
-	while (pos.y < LEM_IPC_BOARD_LEN_Y)
+	enemy = compute_nearest_enemy(board);
+	if (enemy.pos.x == -1 && enemy.pos.y == -1)
 	{
-		pos.x = 0;
-		while (pos.x < LEM_IPC_BOARD_LEN_X)
-		{
-			put_cell(
-				pos,
-				board[pos.x + pos.y * LEM_IPC_BOARD_LEN_X].team_id,
-				&SCENE_BOARD
-			);
-			pos.x++;
-		}
-		pos.y++;
+		ft_pdeb("(%02d,%02d) NO ENEMY FOUND\n", POS.x, POS.y);
+		return (enemy);
 	}
+	ft_pdeb("(%02d,%02d) ENEMY FOUND\n", enemy.pos.x, enemy.pos.y);
+	return (enemy);
+}
+
+void	loop_easy(void)
+{
+	computed_move(handler_move_easy(get_board()));
 }

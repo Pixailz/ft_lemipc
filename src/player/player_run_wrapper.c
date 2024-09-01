@@ -1,36 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   player_run_wrapper.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 17:56:23 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/06/07 11:30:56 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/09/01 17:45:27 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_mlx_texture	SCENE_BOARD;
+extern t_algo_id			AI_ID;
+extern t_bool 				IS_SIGINT;
+extern t_bool 				IS_DEAD;
+extern t_str_algo_func_node	AI_ID_LIST[NB_ALGO];
 
-void	fill_board(t_tile *board)
+t_bool	player_loop(void)
 {
-	t_pos			pos;
+	usleep(LEM_IPC_FREQ);
+	lemipc_check_pause();
+	return (!IS_SIGINT && !IS_DEAD);
+}
 
-	pos.y = 0;
-	while (pos.y < LEM_IPC_BOARD_LEN_Y)
-	{
-		pos.x = 0;
-		while (pos.x < LEM_IPC_BOARD_LEN_X)
-		{
-			put_cell(
-				pos,
-				board[pos.x + pos.y * LEM_IPC_BOARD_LEN_X].team_id,
-				&SCENE_BOARD
-			);
-			pos.x++;
-		}
-		pos.y++;
-	}
+t_error	run_player(void)
+{
+	t_algo_func func;
+
+	func = AI_ID_LIST[AI_ID].func;
+	while (player_loop())
+		func();
+	return (SUCCESS);
 }

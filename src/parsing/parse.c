@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 01:01:15 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/30 13:22:45 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/09/01 17:45:27 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,23 @@
 t_bool			IS_GRAPHICAL = FALSE;
 t_bool			IS_GRAPHICAL_TEXT = FALSE;
 t_lem_team_id	TEAM_ID = 0;
-t_ai_id			AI_ID = 0;
+t_algo_id		AI_ID = 0;
 
-# define NB_AI	3
-
-t_ai_id_list	AI_ID_LIST[NB_AI] = {
-	{RANDOM,	"rand"},
-	{LOW,		"low"},
-	{MEDIUM,	"medium"},
+t_str_algo_func_node	AI_ID_LIST[NB_ALGO] = {
+	// Player algo
+	/// Default algo, random move
+	{"random",	random_move},
+	/// Move to the nearest enemy
+	{"easy",	loop_easy},
+	/// Move to the nearest ally and then do low algo
+	{"medium",	loop_medium},
+	/// Medium algo with msq communication
+	{"hard",	loop_hard},
+	// Debug algo
+	{"up",		up_move},
+	{"down",	down_move},
+	{"right",	right_move},
+	{"left",	left_move},
 };
 
 t_lem_team_id	get_team_id(void)
@@ -54,15 +63,15 @@ t_lem_team_id	get_team_id(void)
 	return (SUCCESS);
 }
 
-t_ai_id translate_ai_id(char *ai_id_str)
+t_algo_id translate_algo_id(char *algo_id_str)
 {
-	int				counter;
+	t_algo_id	counter;
 
 	counter = 0;
-	while (counter < NB_AI)
+	while (counter < NB_ALGO)
 	{
-		if (!ft_strcmp(AI_ID_LIST[counter].str, ai_id_str))
-			return (AI_ID_LIST[counter].id);
+		if (!ft_strcmp(AI_ID_LIST[counter].str, algo_id_str))
+			return (counter);
 		counter++;
 	}
 	return (RANDOM);
@@ -78,7 +87,7 @@ t_bin get_ai(void)
 		AI_ID = AI_ID_DEFAULT;
 		return (SUCCESS);
 	}
-	AI_ID = translate_ai_id(ptr->next->value);
+	AI_ID = translate_algo_id(ptr->next->value);
 	if (AI_ID < 0)
 	{
 		ft_perr("Enter a valid team id\n");

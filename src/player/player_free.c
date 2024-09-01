@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   player_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 17:56:23 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/06/16 14:05:08 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/09/01 19:44:49 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_mlx_texture	SCENE_BOARD;
+extern t_pos			POS;
+extern t_lem_ipc_mem	*LEM_IPC_MEM;
 
-void	fill_board(t_tile *board)
+void	free_player(void)
 {
-	t_pos			pos;
+	t_lem_player_id	player_nb;
 
-	pos.y = 0;
-	while (pos.y < LEM_IPC_BOARD_LEN_Y)
+	if (LEM_IPC_MEM == FT_NULL)
+		return ;
+	dec_player_nb();
+	set_board(POS, (t_tile){0, 0});
+	player_nb = get_player_nb();
+	ft_printf("FREE: player_nb = %d\n", player_nb);
+	if (!player_nb)
 	{
-		pos.x = 0;
-		while (pos.x < LEM_IPC_BOARD_LEN_X)
-		{
-			put_cell(
-				pos,
-				board[pos.x + pos.y * LEM_IPC_BOARD_LEN_X].team_id,
-				&SCENE_BOARD
-			);
-			pos.x++;
-		}
-		pos.y++;
+		unlink_sems();
+		unlink_msqs();
+		shm_unlink(SHO_MEM_KEY);
 	}
 }

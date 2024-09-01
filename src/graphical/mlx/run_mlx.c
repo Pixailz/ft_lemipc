@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   run_mlx.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/28 21:14:08 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/09/01 18:00:36 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ extern void				*WIN;
 extern t_mlx_texture	SCENE_BOARD;
 extern t_mlx_texture	SCENE_LOG;
 extern t_bool			IS_SIGINT;
-extern t_pos			LEM_IPC_SCREEN;
+extern t_bool			IS_ESCAPE;
 extern t_pos			LEM_IPC_BOARD_WIDTH;
 extern t_pos			LEM_IPC_LOG_WIDTH;
 
@@ -28,14 +28,14 @@ int	handler_mlx(void *mlx)
 {
 	t_tile	*board;
 
-	if (IS_SIGINT)
+	check_for_player();
+	if (IS_SIGINT || IS_ESCAPE)
 		return (end_hook(mlx));
 	board = get_board();
 	fill_board(board);
 	mlx_log_put_stat(board);
 	mlx_log_put_total_nb();
 	mlx_put_image_to_window(mlx, WIN, SCENE_BOARD.ptr, ORIGIN_BOARD.x, ORIGIN_BOARD.y);
-	wait_for_memory();
 	usleep(A_SEC / LEM_IPC_GRAPH_FPS_MLX);
 	return (0);
 }

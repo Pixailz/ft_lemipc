@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   run_text.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:10:59 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/06/17 13:14:12 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/08/31 18:09:51 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,7 @@
 
 # define LEN_LINE		(LEM_IPC_BOARD_LEN_X + 2) * (LEM_IPC_BOARD_LEN_X + 2) * 24
 
-extern t_lem_ipc_mem	*LEM_IPC_MEM;
-
-char	*text_get_team_color(t_lem_team_id team_id)
-{
-	char	*COLOR[LEM_IPC_NB_TEAM + 1] = {
-		GRE,
-		GRE,
-		RED,
-		BLU,
-		YEL,
-		ORA,
-		PUR,
-		CYA,
-		WHI
-	};
-	return (COLOR[team_id]);
-}
+extern t_bool			IS_SIGINT;
 
 t_size	print_tile_color(t_lem_team_id team_id, char *line)
 {
@@ -148,7 +132,6 @@ void	render_map(t_tile *map)
 	}
 	ft_putstr_fd(board, 1);
 }
-extern t_bool IS_SIGINT;
 
 t_error	run_graphical_text(void)
 {
@@ -157,7 +140,7 @@ t_error	run_graphical_text(void)
 
 	while (!IS_SIGINT)
 	{
-		wait_for_memory();
+		check_for_player();
 		ft_putstr_fd(CSI "H" CSI "J", 1);
 		ft_printf("frame %d\n", i++);
 		board = get_board();

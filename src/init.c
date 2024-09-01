@@ -1,50 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/01 03:26:32 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/01 16:25:46 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/06/16 14:00:58 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/09/01 19:44:49 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern	t_bool	IS_GRAPHICAL;
-extern	t_bool	IS_GRAPHICAL_TEXT;
+extern	t_bool			IS_GRAPHICAL;
+extern	t_lem_player_id	MY_ID;
+extern	t_algo_id		AI_ID;
 
-t_bin	run(int ac, char **av)
+t_error	init_prog(void)
 {
-	int	ret;
+	t_error	ret;
 
-	ret = parse_opts(ac, av);
-	if (ret == BIT_01)
-		return (ft_opt_exec_cmd());
-	else if (ret != SUCCESS)
+	if ((ret = init_signal()))
 		return (ret);
-	if ((ret = init_prog()))
+	if ((ret = init_shm()))
+		return (ret);
+	if ((ret = init_sems()))
 		return (ret);
 	if (IS_GRAPHICAL)
 	{
-		if (IS_GRAPHICAL_TEXT)
-			ret = run_graphical_text();
-		else
-			ret = run_graphical_mlx();
+		if ((ret = init_graphical()))
+			return (ret);
 	}
 	else
 	{
-		ret = run_player();
+		if ((ret = init_player()))
+			return (ret);
 	}
-	return (ret);
-}
-
-int	main(int ac, char **av)
-{
-	char	ret;
-
-	ret = run(ac, av);
-	free_prog();
+	ft_printf("IS_GRAPHICAL = %d\n", IS_GRAPHICAL);
+	ft_printf("MY_ID = %d\n", MY_ID);
+	ft_printf("MY_AI_ID = %d\n", AI_ID);
 	return (ret);
 }

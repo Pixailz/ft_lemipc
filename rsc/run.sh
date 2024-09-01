@@ -19,7 +19,7 @@ DIR_LOG="${PWD}/rsc/log"
 
 function	clean()
 {
-	pkill -SIGINT --echo "${PROG_PLAYER}"
+	pkill --signal SIGINT --echo "${PROG_PLAYER}"
 	rm -f "${PROG}"
 	exit 130
 }
@@ -36,11 +36,27 @@ else
 	TEAMS=($(seq "${TEAM%-*}" "${TEAM#*-}"))
 fi
 
+declare -A		ALGO_PROFILE=(
+	["1"]=hard
+	["2"]=medium
+	["3"]=medium
+	["4"]=easy
+	["5"]=easy
+	["6"]=easy
+	["7"]=easy
+	["8"]=random
+)
+
 for id in $(seq 1 "${NB_PLAYERS}"); do
 	for team in "${TEAMS[@]}"; do
-		printf "Starting player %d for team %d\n" "${id}" "${team}"
-		"${PROG}" "${team}" "${AI}" >& "${DIR_LOG}/runner_${team}_${id}" &
-		# "${PROG}" "${team}" "${AI}" >/dev/null &
+		if [ "${AI}" == "use_profile" ]; then
+			tmp_ai="${ALGO_PROFILE[${team}]}"
+		else
+			tmp_ai="${AI}"
+		fi
+		printf "Starting player %d for team %d (AI: %s)\n" "${id}" "${team}" "${tmp_ai}"
+		# "${PROG}" "${team}" "${tmp_ai}" >& "${DIR_LOG}/runner_${id}_${team}" &
+		"${PROG}" "${team}" "${tmp_ai}" >/dev/null &
 	done
 done
 

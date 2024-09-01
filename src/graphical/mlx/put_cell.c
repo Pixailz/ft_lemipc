@@ -1,36 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   put_cell.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 17:56:23 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/06/16 14:20:46 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/08/31 17:52:40 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_mlx_texture	SCENE_BOARD;
-
-void	fill_board(t_tile *board)
+void	put_cell(t_pos pos, t_lem_team_id team_id, t_mlx_texture *scene)
 {
-	t_pos			pos;
+	t_pos	ppos;
+	t_int4	color;
 
-	pos.y = 0;
-	while (pos.y < LEM_IPC_BOARD_LEN_Y)
+	ppos.y = (pos.y * CELL_SIZE) + 1;
+	color = mlx_get_team_color(team_id);
+	while (ppos.y < (pos.y + 1) * CELL_SIZE)
 	{
-		pos.x = 0;
-		while (pos.x < LEM_IPC_BOARD_LEN_X)
+		ppos.x = (pos.x * CELL_SIZE) + 1;
+		while (ppos.x < (pos.x + 1) * CELL_SIZE)
 		{
-			put_cell(
-				pos,
-				board[pos.x + pos.y * LEM_IPC_BOARD_LEN_X].team_id,
-				&SCENE_BOARD
-			);
-			pos.x++;
+			ft_put_pixel(ppos, scene, color);
+			ppos.x++;
 		}
-		pos.y++;
+		ppos.y++;
 	}
 }

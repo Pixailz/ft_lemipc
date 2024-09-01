@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   msq_remove_last_pos.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 17:56:23 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/09/02 00:13:52 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/09/02 00:23:30 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_mlx_texture	SCENE_BOARD;
+extern t_pos	LAST_POS;
+extern t_bool	IS_SIGINT;
 
-void	fill_board(t_tile *board)
+void	msq_remove_last_pos(void)
 {
-	t_pos			pos;
+	t_msq_atk	*msg;
 
-	pos.y = 0;
-	while (pos.y < LEM_IPC_BOARD_LEN_Y)
+	while (!IS_SIGINT)
 	{
-		pos.x = 0;
-		while (pos.x < LEM_IPC_BOARD_LEN_X)
-		{
-			put_cell(
-				pos,
-				board[pos.x + pos.y * LEM_IPC_BOARD_LEN_X].team_id,
-				&SCENE_BOARD
-			);
-			pos.x++;
-		}
-		pos.y++;
+		if (msq_recv(MSQ_TYPE_ATK))
+			return ;
+		msg = msq_get_attack();
+		if (msg != FT_NULL &&
+			msg->target.x == LAST_POS.x && msg->target.y == LAST_POS.y
+		)
+			return ;
+		msq_send();
 	}
 }
+

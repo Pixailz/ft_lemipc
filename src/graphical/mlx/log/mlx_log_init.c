@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   mlx_log_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 17:56:23 by brda-sil         ###   ########.fr       */
+/*   Created: 2024/08/25 00:50:16 by brda-sil          #+#    #+#             */
+/*   Updated: 2024/09/01 15:42:27 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern t_mlx_texture	SCENE_BOARD;
+t_uint32		LEM_LOG_NB_LINE = -1;
 
-void	fill_board(t_tile *board)
+extern t_pos	LEM_IPC_LOG_WIDTH;
+
+void	get_nb_log_line(void)
 {
-	t_pos			pos;
+	LEM_LOG_NB_LINE = LEM_IPC_LOG_WIDTH.y / MLX_FONT_UNIT_Y;
+	LEM_LOG_NB_LINE -= LEM_IPC_LOG_HEADER_SIZE + LEM_IPC_LOG_FOOTER_SIZE;
+	return ;
+}
 
-	pos.y = 0;
-	while (pos.y < LEM_IPC_BOARD_LEN_Y)
-	{
-		pos.x = 0;
-		while (pos.x < LEM_IPC_BOARD_LEN_X)
-		{
-			put_cell(
-				pos,
-				board[pos.x + pos.y * LEM_IPC_BOARD_LEN_X].team_id,
-				&SCENE_BOARD
-			);
-			pos.x++;
-		}
-		pos.y++;
-	}
+void	init_log_str(char ***log_str)
+{
+	get_nb_log_line();
+	*log_str = (char **)ft_calloc(sizeof(char *), LEM_LOG_NB_LINE + 1);
 }

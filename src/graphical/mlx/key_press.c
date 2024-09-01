@@ -6,16 +6,20 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:29:30 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/25 06:17:59 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/09/01 17:43:26 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-t_ai_id_list	KEY_CODE_TO_STR[] = {
-	{KEY_ESC, "KEY_ESC"},
-	{KEY_SPACE, "KEY_SPACE"},
-	{0, FT_NULL}
+t_bool			IS_ESCAPE = FALSE;
+
+# define		NB_KEY_CODE_TO_STR	3
+
+t_str_int_node	KEY_CODE_TO_STR[NB_KEY_CODE_TO_STR] = {
+	{FT_NULL,		0},
+	{"ESC",		KEY_ESC},
+	{"SPACE",	KEY_SPACE},
 };
 
 char	*key_code_to_str(int key_code)
@@ -23,9 +27,9 @@ char	*key_code_to_str(int key_code)
 	int	i;
 
 	i = 0;
-	while (KEY_CODE_TO_STR[i].str)
+	while (i < NB_KEY_CODE_TO_STR)
 	{
-		if (KEY_CODE_TO_STR[i].id == key_code)
+		if (KEY_CODE_TO_STR[i].nb == key_code)
 			return (KEY_CODE_TO_STR[i].str);
 		i++;
 	}
@@ -56,6 +60,7 @@ int	key_release(int key_code, void *mlx)
 
 int	end_hook(void *mlx)
 {
+	IS_ESCAPE = TRUE;
 	mlx_loop_end(mlx);
 	return (0);
 }
