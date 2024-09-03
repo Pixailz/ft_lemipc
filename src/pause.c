@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 22:57:46 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/26 09:38:59 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/09/02 21:55:42 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,15 @@ void	lemipc_pause_toggle(void)
 		PAUSE_HEADER "Now %s",
 		IS_PAUSED ? PAUSE_ENABLE : PAUSE_DISABLE
 	);
+}
+
+void	lemipc_pause_set(t_bool target)
+{
+	t_int32		sem_value;
+
+	sem_getvalue(LEM_IPC_SEM.pause, &sem_value);
+	if (target && sem_value)
+		sem_wait(LEM_IPC_SEM.pause);
+	else if (!target && !sem_value)
+		sem_post(LEM_IPC_SEM.pause);
 }

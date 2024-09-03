@@ -12,7 +12,7 @@
 
 #include "lem_ipc.h"
 
-t_msq_hdr	*msq_get_hdr(void)
+t_msq_hdr	*msq_get_header(void)
 {
 	char	*buff;
 	size_t	*buff_len;

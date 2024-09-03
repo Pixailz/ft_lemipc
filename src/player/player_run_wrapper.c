@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:30:56 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/01 17:45:27 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/09/02 22:22:04 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ t_error	run_player(void)
 	func = AI_ID_LIST[AI_ID].func;
 	while (player_loop())
 		func();
+	msq_remove_last(MSQ_TYPE_ATK);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:14:17 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/02 00:24:18 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/09/02 21:05:43 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,15 @@
  * mq_open()
  */
 
-typedef enum e_log_pos
-{
-	LOG_POS_DISABLE = 0,
-	LOG_POS_RIGHT = 1,
-	LOG_POS_LEFT = 2,
-	LOG_POS_TOP = 3,
-	LOG_POS_BOTTOM = 4
-}	t_log_pos;
+# include "lem_ipc_profile/define.h"
+
+# define LEM_IPC_LOG_POS			LOG_POS_RIGHT
+# define LEM_IPC_PROFILE_SIZE		LEM_IPC_PROFILE_SIZE_VERY_LARGE
+# define LEM_IPC_PROFILE_SPEED		LEM_IPC_PROFILE_SPEED_VERY_FAST
+
+# include "lem_ipc_profile/size.h"
+# include "lem_ipc_profile/speed.h"
+
 
 # define	MLX_WHITE	0xFFFFFF
 # define	MLX_GRAY	0x808080
@@ -99,41 +100,13 @@ typedef enum e_log_pos
 typedef t_uint8							t_lem_team_id;
 typedef t_uint16						t_lem_player_id;
 
-// # define	LEM_IPC_BOARD_LEN_X			25
-// # define	LEM_IPC_BOARD_LEN_Y			25
-
-# define	LEM_IPC_BOARD_LEN_X			50
-# define	LEM_IPC_BOARD_LEN_Y			50
-
-// # define	LEM_IPC_BOARD_LEN_X			100
-// # define	LEM_IPC_BOARD_LEN_Y			100
-
-// # define	LEM_IPC_BOARD_LEN_X			200
-// # define	LEM_IPC_BOARD_LEN_Y			200
-
-// # define	LEM_IPC_BOARD_LEN_X			400
-// # define	LEM_IPC_BOARD_LEN_Y			400
-
 # define	LEM_IPC_BOARD_LEN			(LEM_IPC_BOARD_LEN_X * LEM_IPC_BOARD_LEN_Y)
 # define	LEM_IPC_GRAPH_FPS_TEXT		10
 # define	LEM_IPC_GRAPH_FPS_MLX		60
 # define	LEM_IPC_NB_TEAM				8
 
-// # define 	LEM_IPC_FREQ				A_SEC / 50s
-
-// # define 	LEM_IPC_FREQ				A_SEC / 10
-
-// # define 	LEM_IPC_FREQ				A_SEC / 2
-
-# define 	LEM_IPC_FREQ				A_SEC
-
-// # define 	LEM_IPC_FREQ				A_SEC * 2
-
-// # define 	LEM_IPC_FREQ				A_SEC * 10
-
 # define	LEM_IPC_LOG_SIZE_X			300
 # define	LEM_IPC_LOG_SIZE_Y			400
-# define	LEM_IPC_LOG_POS				LOG_POS_RIGHT
 
 # define	LEM_IPC_LOG_BACK			0x36454F
 # define	LEM_IPC_LOG_BORDER			0x33FF8D
@@ -148,12 +121,6 @@ typedef t_uint16						t_lem_player_id;
 
 # define	LEM_IPC_LEN_NB_TOTAL		7
 # define	LEM_IPC_NB_TOTAL			"Total player: "
-
-// # define	CELL_SIZE	2
-// # define	CELL_SIZE	3
-// # define	CELL_SIZE	6
-# define	CELL_SIZE	12
-// # define	CELL_SIZE	24
 
 typedef struct __attribute__((__packed__)) s_tile
 {
@@ -275,14 +242,20 @@ typedef struct	s_str_int_node
 
 # define AI_ID_DEFAULT	RANDOM
 
-# define MAX_ITER ( \
+# define LEM_IPC_BOARD_LEN_MAX ( \
 	LEM_IPC_BOARD_LEN_X > LEM_IPC_BOARD_LEN_Y \
 		? LEM_IPC_BOARD_LEN_X \
 		: LEM_IPC_BOARD_LEN_Y \
 	)
 
-// MESSAGE QUEUE PROTOCOL
+typedef enum e_player_status
+{
+	STATUS_UNKNOWN = -1,
+	STATUS_LEADER = 1,
+	STATUS_FOLLOWER = 2,
+}	t_player_status;
 
+// MESSAGE QUEUE PROTOCOL
 
 // Define all the message types that can be sent through the message queue
 typedef enum e_lem_ipc_msq_type
@@ -293,20 +266,22 @@ typedef enum e_lem_ipc_msq_type
 typedef struct __attribute__((__packed__))	s_msq_hdr
 {
 	t_lem_ipc_message_type	type:8;
+	t_lem_player_id			player_id;
 }	t_msq_hdr;
 
 typedef struct __attribute__((__packed__))	s_msq_atk
 {
-	t_pos	attacker;
+	t_pos	leader;
 	t_pos	target;
 }	t_msq_atk;
 
+# define				MSQ_MSG_MAX		10
 	// Maximum size of a message
-# define				MSQ_SIZE_MAX 0xffff
+# define				MSQ_SIZE_MAX	0xffff
 	// Size of the header of a message
-# define				MSQ_SIZE_HDR sizeof(t_msq_hdr)
+# define				MSQ_SIZE_HDR	sizeof(t_msq_hdr)
 	// Size of the attack message
-# define				MSQ_SIZE_ATK sizeof(t_msq_atk)
+# define				MSQ_SIZE_ATK	sizeof(t_msq_atk)
 
 /* ########################################################################## */
 /* FILES */
@@ -317,6 +292,12 @@ typedef struct __attribute__((__packed__))	s_msq_atk
 t_tile			*get_board(void);
 void			set_board(t_pos pos, t_tile tile);
 void			set_board_move(t_pos from, t_pos to, t_tile tile);
+
+// debug.c
+
+void			debug_msq_recv(void);
+void			debug_msq_get_nearest_attack(void);
+void			debug_msq(int ac, char **av);
 
 // free.c
 
@@ -444,7 +425,8 @@ t_error			init_prog(void);
 
 // main.c
 
-t_bin			run(int ac, char **av);
+t_bin			init(int ac, char **av);
+t_bin			run(void);
 int				main(int ac, char **av);
 
 // message_queue/msq_free.c
@@ -456,9 +438,13 @@ void			close_msqs(void);
 
 t_msq_atk		*msq_get_attack(void);
 
+// message_queue/msq_get_attack_by_id.c
+
+t_msq_atk		*msq_get_attack_by_id(t_lem_player_id id);
+
 // message_queue/msq_get_hdr.c
 
-t_msq_hdr		*msq_get_hdr(void);
+t_msq_hdr		*msq_get_header(void);
 
 // message_queue/msq_get_nearest_attack.c
 
@@ -467,7 +453,7 @@ t_msq_atk		*msq_get_nearest_attack(void);
 // message_queue/msq_init.c
 
 t_error			init_msq(mqd_t *msq, char *name);
-t_error			set_non_blocking_msq(mqd_t *msq);
+t_error			set_attr_msq(mqd_t *msq);
 char			*get_msq_key(t_lem_team_id team_id);
 t_error			init_msqs(void);
 
@@ -480,9 +466,13 @@ t_error			init_msqs_graphical(void);
 
 t_bool			msq_recv(t_lem_ipc_message_type type);
 
-// message_queue/msq_remove_last_pos.c
+// message_queue/msq_remove_all.c
 
-void			msq_remove_last_pos(void);
+void			msq_remove_all(t_lem_ipc_message_type type);
+
+// message_queue/msq_remove_last.c
+
+void			msq_remove_last(t_lem_ipc_message_type type);
 
 // message_queue/msq_send.c
 
@@ -522,6 +512,7 @@ t_bin			parse_opts(int ac, char **av);
 
 void			lemipc_check_pause(void);
 void			lemipc_pause_toggle(void);
+void			lemipc_pause_set(t_bool target);
 
 // player/algo/compute_choose_enemy_ally.c
 
@@ -537,19 +528,19 @@ t_vec			compute_nearest_player(t_tile *board, int mode);
 t_vec			compute_nearest_ally(t_tile *board);
 t_vec			compute_nearest_enemy(t_tile *board);
 
-// player/algo/debug/algo_down.c
+// player/algo/debug/dir/algo_down.c
 
 void			down_move(void);
 
-// player/algo/debug/algo_left.c
+// player/algo/debug/dir/algo_left.c
 
 void			left_move(void);
 
-// player/algo/debug/algo_right.c
+// player/algo/debug/dir/algo_right.c
 
 void			right_move(void);
 
-// player/algo/debug/algo_up.c
+// player/algo/debug/dir/algo_up.c
 
 void			up_move(void);
 

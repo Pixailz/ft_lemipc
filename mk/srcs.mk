@@ -1,5 +1,6 @@
 # SRCS
 SRC_C := board.c \
+		 debug.c \
 		 free.c \
 		 ft_get_abs.c \
 		 graphical/check_for_player.c \
@@ -27,12 +28,14 @@ SRC_C := board.c \
 		 main.c \
 		 message_queue/msq_free.c \
 		 message_queue/msq_get_attack.c \
+		 message_queue/msq_get_attack_by_id.c \
 		 message_queue/msq_get_hdr.c \
 		 message_queue/msq_get_nearest_attack.c \
 		 message_queue/msq_init.c \
 		 message_queue/msq_init_graphical.c \
 		 message_queue/msq_recv.c \
-		 message_queue/msq_remove_last_pos.c \
+		 message_queue/msq_remove_all.c \
+		 message_queue/msq_remove_last.c \
 		 message_queue/msq_send.c \
 		 message_queue/msq_send_attack.c \
 		 message_queue/sing_msq_buff.c \
@@ -43,10 +46,10 @@ SRC_C := board.c \
 		 player/algo/compute_choose_enemy_ally.c \
 		 player/algo/compute_move.c \
 		 player/algo/compute_nearest.c \
-		 player/algo/debug/algo_down.c \
-		 player/algo/debug/algo_left.c \
-		 player/algo/debug/algo_right.c \
-		 player/algo/debug/algo_up.c \
+		 player/algo/debug/dir/algo_down.c \
+		 player/algo/debug/dir/algo_left.c \
+		 player/algo/debug/dir/algo_right.c \
+		 player/algo/debug/dir/algo_up.c \
 		 player/algo/player/algo_easy.c \
 		 player/algo/player/algo_hard.c \
 		 player/algo/player/algo_medium.c \

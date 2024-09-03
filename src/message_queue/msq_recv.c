@@ -19,12 +19,11 @@ static t_bool	msq_recv_post(t_lem_ipc_message_type type)
 {
 	t_msq_hdr	*msg_hdr;
 
-	msg_hdr = msq_get_hdr();
-	ft_printf("msg_hdr->type: %d\n", msg_hdr->type);
+	msg_hdr = msq_get_header();
 	if (msg_hdr->type != type)
 	{
 		if (msq_send() && errno != 0)
-			return (FALSE);
+			return (TRUE);
 		return (msq_recv(type));
 	}
 	return (FALSE);

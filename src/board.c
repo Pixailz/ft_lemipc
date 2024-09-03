@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:35:16 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/02 00:12:59 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:17:43 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 extern	t_lem_ipc_mem	*LEM_IPC_MEM;
 extern	t_lem_ipc_sem	LEM_IPC_SEM;
-t_pos					LAST_POS;
 
 t_tile	*get_board(void)
 {
@@ -39,5 +38,4 @@ void	set_board_move(t_pos from, t_pos to, t_tile tile)
 	LEM_IPC_MEM->board[from.x + (from.y * LEM_IPC_BOARD_LEN_X)] = (t_tile){0, 0};
 	LEM_IPC_MEM->board[to.x + (to.y * LEM_IPC_BOARD_LEN_X)] = tile;
 	sem_post(LEM_IPC_SEM.board);
-	LAST_POS = from;
 }

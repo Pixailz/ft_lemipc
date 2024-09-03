@@ -36,15 +36,15 @@ else
 	TEAMS=($(seq "${TEAM%-*}" "${TEAM#*-}"))
 fi
 
-declare -A		ALGO_PROFILE=(
+declare -A	ALGO_PROFILE=(
 	["1"]=hard
-	["2"]=medium
-	["3"]=medium
-	["4"]=easy
-	["5"]=easy
-	["6"]=easy
-	["7"]=easy
-	["8"]=random
+	["2"]=hard
+	["3"]=hard
+	["4"]=medium
+	["5"]=medium
+	["6"]=medium
+	["7"]=medium
+	["8"]=medium
 )
 
 for id in $(seq 1 "${NB_PLAYERS}"); do
@@ -56,7 +56,8 @@ for id in $(seq 1 "${NB_PLAYERS}"); do
 		fi
 		printf "Starting player %d for team %d (AI: %s)\n" "${id}" "${team}" "${tmp_ai}"
 		# "${PROG}" "${team}" "${tmp_ai}" >& "${DIR_LOG}/runner_${id}_${team}" &
-		"${PROG}" "${team}" "${tmp_ai}" >/dev/null &
+		"${PROG}" "${team}" "${tmp_ai}" >& "${DIR_LOG}/runner_${team}_${id}" &
+		# "${PROG}" "${team}" "${tmp_ai}" >/dev/null &
 	done
 done
 

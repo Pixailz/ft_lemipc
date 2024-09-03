@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:30:56 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/01 16:40:38 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/09/02 22:03:09 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ t_pos	get_nearest_player(t_tile *board, int mode)
 	int		i;
 
 	i = 1;
-	while (i < MAX_ITER)
+	while (i < LEM_IPC_BOARD_LEN_MAX)
 	{
 		vec.pos = POS;
 		vec.pos.x -= i;

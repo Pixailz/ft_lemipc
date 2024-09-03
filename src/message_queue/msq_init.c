@@ -40,7 +40,7 @@ t_error	init_msq(mqd_t *msq, char *name)
 	return (SUCCESS);
 }
 
-t_error	set_non_blocking_msq(mqd_t *msq)
+t_error	set_attr_msq(mqd_t *msq)
 {
 	struct mq_attr	attr;
 
@@ -50,6 +50,7 @@ t_error	set_non_blocking_msq(mqd_t *msq)
 		return (ERR_MSQ_INIT);
 	}
 	attr.mq_flags = O_NONBLOCK;
+	attr.mq_maxmsg = MSQ_MSG_MAX;
 	if (mq_setattr(*msq, &attr, FT_NULL) == -1)
 	{
 		perror("mq_setattr");
@@ -78,7 +79,7 @@ t_error	init_msqs(void)
 		tmp = get_msq_key(i);
 		if ((retv = init_msq(&LEM_IPC_MSQ[i], tmp)))
 			return (retv);
-		if ((retv = set_non_blocking_msq(&LEM_IPC_MSQ[i])))
+		if ((retv = set_attr_msq(&LEM_IPC_MSQ[i])))
 			return (retv);
 		i++;
 		ft_printf("msq_init: succeed /dev/mqueue%s\n", tmp);

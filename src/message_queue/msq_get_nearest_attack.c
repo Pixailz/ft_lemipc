@@ -19,8 +19,10 @@ t_msq_atk	*msq_get_nearest_attack(void)
 {
 	t_msq_atk	*msg;
 	t_vec		tmp;
+	int			counter;
 
-	while (!IS_SIGINT)
+	counter = 0;
+	while (counter < MSQ_MSG_MAX)
 	{
 		if (msq_recv(MSQ_TYPE_ATK))
 			return (FT_NULL);
@@ -28,13 +30,14 @@ t_msq_atk	*msq_get_nearest_attack(void)
 		if (msg == FT_NULL)
 			return (FT_NULL);
 		if (msg->target.x == -1 && msg->target.y == -1)
-			return (FT_NULL);
+			continue;
 		msq_send();
 		tmp.pos.x = msg->target.x - POS.x;
 		tmp.pos.y = msg->target.y - POS.y;
 		tmp.dir.x = ft_get_abs(tmp.pos.x) + ft_get_abs(tmp.pos.y);
-		if (tmp.dir.x < 16)
+		if (tmp.dir.x < LEM_IPC_BOARD_LEN_MAX)
 			break;
+		counter++;
 	}
 	return (msg);
 }
