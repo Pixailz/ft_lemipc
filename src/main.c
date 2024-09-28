@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 03:26:32 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/02 18:05:19 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/09/12 15:28:19 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,47 +15,54 @@
 extern	t_bool	IS_GRAPHICAL;
 extern	t_bool	IS_GRAPHICAL_TEXT;
 
+t_bool			OPT_EXECUTED = FALSE;
+
 t_bin	init(int ac, char **av)
 {
-	int	ret;
+	int	retv;
 
-	ret = parse_opts(ac, av);
-	if (ret == BIT_01)
+	retv = parse_opts(ac, av);
+	if (retv == BIT_01)
+	{
+		OPT_EXECUTED = TRUE;
 		return (ft_opt_exec_cmd());
-	else if (ret != SUCCESS)
-		return (ret);
-	if ((ret = init_prog()))
-		return (ret);
-	return (ret);
+	}
+	else if (retv != SUCCESS)
+		return (retv);
+	if ((retv = init_prog()))
+		return (retv);
+	return (retv);
 }
 
 t_bin	run(void)
 {
-	int	ret;
+	int	retv;
 
 	if (IS_GRAPHICAL)
 	{
 		if (IS_GRAPHICAL_TEXT)
-			ret = run_graphical_text();
+			retv = run_graphical_text();
 		else
-			ret = run_graphical_mlx();
+			retv = run_graphical_mlx();
 	}
 	else
 	{
-		ret = run_player();
+		retv = run_player();
 	}
-	return (ret);
+	return (retv);
 }
 
 int	main(int ac, char **av)
 {
-	char	ret = 0;
+	char	retv = 0;
 
-	if ((ret = init(ac, av)))
-		return (ret);
-	if ((ret = run()))
-		return (ret);
+	if ((retv = init(ac, av)))
+		return (retv);
+	if (OPT_EXECUTED)
+		return (retv);
+	if ((retv = run()))
+		return (retv);
 	// debug_msq(ac, av);
 	free_prog();
-	return (ret);
+	return (retv);
 }

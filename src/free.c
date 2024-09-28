@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
+/*   By: pix <pix@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:04:17 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/01 19:44:49 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/09/28 14:06:16 by pix              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-extern	t_bool			IS_GRAPHICAL;
-extern	t_bool			IS_GRAPHICAL_TEXT;
+extern t_bool			IS_GRAPHICAL;
+extern t_bool			IS_GRAPHICAL_TEXT;
 extern t_lem_ipc_sem	LEM_IPC_SEM;
+extern t_lem_ipc_mem	*LEM_IPC_MEM;
 
 void	free_prog(void)
 {
@@ -27,4 +28,5 @@ void	free_prog(void)
 		free_player();
 	close_sems();
 	close_msqs();
+	munmap(LEM_IPC_MEM, SHO_MEM_SIZE);
 }
