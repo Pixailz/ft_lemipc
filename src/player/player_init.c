@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:15:31 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/01 19:41:29 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/09/28 14:31:49 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ t_error	get_random_pos(void)
 	POS = get_empty_pos();
 	if (POS.x == -1 && POS.y == -1)
 		return (BOARD_FULL);
-	set_board(POS, (t_tile){TEAM_ID, MY_ID});
 	return (SUCCESS);
 }
 
@@ -59,11 +58,12 @@ t_error	init_player(void)
 
 	if ((ret = init_msqs()))
 		return (ret);
-	MY_ID = inc_player_nb();
-	inc_max_player_nb();
-	ft_printf("ID: %d | TEAM: %d\n", MY_ID, TEAM_ID);
 	if (get_random_pos())
 		return (BOARD_FULL);
+	MY_ID = inc_player_nb();
+	set_board(POS, (t_tile){TEAM_ID, MY_ID});
+	inc_max_player_nb();
+	ft_printf("ID: %d | TEAM: %d\n", MY_ID, TEAM_ID);
 	ft_printf("Random Pos\nx = %d\ny = %d\n", POS.x, POS.y);
 	return (SUCCESS);
 }

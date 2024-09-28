@@ -101,7 +101,7 @@ typedef t_uint8							t_lem_team_id;
 typedef t_uint16						t_lem_player_id;
 
 # define	LEM_IPC_BOARD_LEN			(LEM_IPC_BOARD_LEN_X * LEM_IPC_BOARD_LEN_Y)
-# define	LEM_IPC_GRAPH_FPS_TEXT		10
+# define	LEM_IPC_GRAPH_FPS_TEXT		30
 # define	LEM_IPC_GRAPH_FPS_MLX		60
 # define	LEM_IPC_NB_TEAM				8
 
