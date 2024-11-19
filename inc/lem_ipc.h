@@ -52,7 +52,7 @@
 # include "lem_ipc_profile/define.h"
 
 # define LEM_IPC_LOG_POS			LOG_POS_RIGHT
-# define LEM_IPC_PROFILE_SIZE		LEM_IPC_PROFILE_SIZE_VERY_LARGE
+# define LEM_IPC_PROFILE_SIZE		LEM_IPC_PROFILE_SIZE_MEDIUM
 # define LEM_IPC_PROFILE_SPEED		LEM_IPC_PROFILE_SPEED_VERY_FAST
 
 # include "lem_ipc_profile/size.h"
@@ -78,7 +78,7 @@
 # define	MLX_FONT_SPACING_X	1
 # define	MLX_FONT_UNIT_Y		(MLX_FONT_SPACING_Y + MLX_FONT_SIZE_Y)
 # define	MLX_FONT_UNIT_X		(MLX_FONT_SPACING_X + MLX_FONT_SIZE_X)
-# define	MLX_FONT_COLOR		LEM_IPC_LOG_BORDER
+# define	MLX_FONT_COLOR		0x33FF8D
 
 	// KEYBOARD
 		// DEFAULT
@@ -109,7 +109,7 @@ typedef t_uint16						t_lem_player_id;
 # define	LEM_IPC_LOG_SIZE_Y			400
 
 # define	LEM_IPC_LOG_BACK			0x36454F
-# define	LEM_IPC_LOG_BORDER			0x33FF8D
+# define	LEM_IPC_LOG_BORDER			MLX_FONT_COLOR
 # define	LEM_IPC_LOG_HEADER_SIZE		4
 # define	LEM_IPC_LOG_FOOTER_SIZE		1
 
@@ -175,7 +175,7 @@ typedef struct s_sho
 	t_uint32	m_flag;
 }	t_sho;
 
-# define SHO_MEM_KEY		"/lem-ipc_mem"
+# define SHO_MEM_KEY		"/mem.lem-ipc"
 # define SHO_MEM_OFLAG		O_RDWR
 # define SHO_MEM_PERM		0666
 # define SHO_MEM_SIZE		sizeof(t_lem_ipc_mem)
@@ -183,8 +183,8 @@ typedef struct s_sho
 # define SHM_PROT			PROT_READ | PROT_WRITE
 # define SHM_FLAG			MAP_SHARED
 
-# define SHO_SEM_KEY		"lem-ipc_sem"
-# define SHO_MSQ_KEY		"lem-ipc_messsage_queue"
+# define SHO_SEM_KEY		"lem-ipc"
+# define SHO_MSQ_KEY		"lem-ipc"
 
 typedef enum e_error
 {

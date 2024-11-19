@@ -47,7 +47,7 @@ t_bool	msq_recv(t_lem_ipc_message_type type)
 			perror("msq_recv");
 		else
 		{
-			ft_perr("msq_recv: Message Queue EMPTY, Team %d\n", TEAM_ID);
+			ft_pdeb("msq_recv: Message Queue EMPTY, Team %d\n", TEAM_ID);
 			errno = 0;
 		}
 		return (TRUE);

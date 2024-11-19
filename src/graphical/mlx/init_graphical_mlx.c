@@ -129,7 +129,7 @@ t_error	init_graphical_mlx(void)
 		return (ERR_INIT_MLX_WIN);
 	if ((ret = init_scenes()))
 		return (ret);
-	// mlx_hook(WIN, 33, (1L << 17), end_hook, MLX);
+	mlx_hook(WIN, 33, (1L << 17), end_hook, MLX);
 	mlx_hook(WIN, 2, (1L << 0), key_press, MLX);
 	mlx_hook(WIN, 3, (1L << 1), key_release, MLX);
 	mlx_loop_hook(MLX, &handler_mlx, MLX);

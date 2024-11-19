@@ -24,7 +24,6 @@ t_error	init_msq(mqd_t *msq, char *name)
 		{
 			if ((*msq = mq_open(name, O_RDWR, 0644, FT_NULL)) == (mqd_t)-1)
 			{
-				ft_printf("Errno %d\n", errno);
 				perror("mq_reopen");
 				return (ERR_MSQ_INIT);
 			}

@@ -11,7 +11,7 @@ $(call PB_INIT)
 ## config
 .SILENT:
 
-.PHONY: setup $(LIBS)
+.PHONY: setup $(LIBS) iipc cipc
 
 .DEFAULT: all
 
@@ -128,3 +128,15 @@ endif
 re:						fclean all
 
 re_all:					fclean_all all
+
+IPCS							:= /dev/shm/mem.lem-ipc /dev/shm/sem.lem-ipc* /dev/mqueue/lem-ipc*
+
+iipc:
+> for i in $(IPCS); do \
+	echo -e \\t$${i}; \
+	ls -la $${i} || true; \
+done
+# > ls -la $(IPCS) || true
+
+cipc:
+> rm -f $(IPCS)
