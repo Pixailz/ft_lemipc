@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:14:15 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/01 19:41:29 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:12:50 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 extern	t_bool	IS_GRAPHICAL_TEXT;
 
-t_error	init_graphical(void)
+t_lemipc_error	init_graphical(void)
 {
-	t_error	ret;
+	t_lemipc_error	ret;
 
 	if ((ret = init_msqs_graphical()))
 		return (ret);

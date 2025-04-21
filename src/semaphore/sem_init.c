@@ -19,7 +19,7 @@ t_lem_ipc_sem	LEM_IPC_SEM = {
 	.max_player_nb = 0
 };
 
-t_error	init_sem(sem_t **sem, char *name, int value)
+t_lemipc_error	init_sem(sem_t **sem, char *name, int value)
 {
 	t_int32		sem_value;
 
@@ -51,9 +51,9 @@ char	*get_sem_key(char *key)
 	return (buff);
 }
 
-t_error	init_sems(void)
+t_lemipc_error	init_sems(void)
 {
-	t_error	ret;
+	t_lemipc_error	ret;
 
 	if ((ret = init_sem(
 			&LEM_IPC_SEM.player_nb,

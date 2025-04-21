@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:15:31 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/28 14:31:49 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:12:50 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static	t_pos	get_empty_pos(void)
 	return (empty[ft_randint(0, j)]);
 }
 
-t_error	get_random_pos(void)
+t_lemipc_error	get_random_pos(void)
 {
 	POS = get_empty_pos();
 	if (POS.x == -1 && POS.y == -1)
@@ -52,9 +52,9 @@ t_error	get_random_pos(void)
 	return (SUCCESS);
 }
 
-t_error	init_player(void)
+t_lemipc_error	init_player(void)
 {
-	t_error ret;
+	t_lemipc_error ret;
 
 	if ((ret = init_msqs()))
 		return (ret);

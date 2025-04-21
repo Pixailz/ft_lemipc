@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:30:56 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/02 22:22:04 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:12:50 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_bool	player_loop(void)
 	return (!IS_SIGINT && !IS_DEAD);
 }
 
-t_error	run_player(void)
+t_lemipc_error	run_player(void)
 {
 	t_algo_func func;
 

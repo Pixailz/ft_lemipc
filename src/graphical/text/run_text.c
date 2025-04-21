@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 11:10:59 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 18:09:51 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:12:50 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void	render_map(t_tile *map)
 	ft_putstr_fd(board, 1);
 }
 
-t_error	run_graphical_text(void)
+t_lemipc_error	run_graphical_text(void)
 {
 	t_uint64	i = 0;
 	t_tile		*board;

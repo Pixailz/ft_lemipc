@@ -14,7 +14,7 @@
 
 mqd_t			LEM_IPC_MSQ[LEM_IPC_NB_TEAM] = {0};
 
-t_error	init_msq(mqd_t *msq, char *name)
+t_lemipc_error	init_msq(mqd_t *msq, char *name)
 {
 	errno = 0;
 	if ((*msq = mq_open(name, O_RDWR | O_CREAT | O_EXCL, 0644, FT_NULL)) == (mqd_t)-1)
@@ -39,7 +39,7 @@ t_error	init_msq(mqd_t *msq, char *name)
 	return (SUCCESS);
 }
 
-t_error	set_attr_msq(mqd_t *msq)
+t_lemipc_error	set_attr_msq(mqd_t *msq)
 {
 	struct mq_attr	attr;
 
@@ -66,9 +66,9 @@ char	*get_msq_key(t_lem_team_id team_id)
 	return (buff);
 }
 
-t_error	init_msqs(void)
+t_lemipc_error	init_msqs(void)
 {
-	t_error	retv;
+	t_lemipc_error	retv;
 	char	*tmp;
 	int		i;
 

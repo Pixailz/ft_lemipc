@@ -12,7 +12,6 @@
 
 #include "lem_ipc.h"
 
-extern t_bool	IS_SIGINT;
 extern t_pos	POS;
 
 t_msq_atk	*msq_get_nearest_attack(void)

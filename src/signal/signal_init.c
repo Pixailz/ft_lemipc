@@ -6,13 +6,13 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:01:51 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/08/31 18:00:11 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:12:50 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_ipc.h"
 
-t_error	init_signal(void)
+t_lemipc_error	init_signal(void)
 {
 	if (signal(SIGINT, &sig_handler) == SIG_ERR)
 	{

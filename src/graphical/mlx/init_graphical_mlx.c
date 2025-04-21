@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:09:53 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/01 17:32:47 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:12:50 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_pos			LEM_IPC_SCREEN = {0};
 t_pos			LEM_IPC_BOARD_WIDTH = {0};
 t_pos			LEM_IPC_LOG_WIDTH = {0};
 
-t_error	init_scene_board_border(t_size cell_size)
+t_lemipc_error	init_scene_board_border(t_size cell_size)
 {
 	t_bool	xx;
 	t_pos	pos;
@@ -66,7 +66,7 @@ void	init_scene_log_border(void)
 	}
 }
 
-t_error	init_scene(t_mlx_texture *scene, t_pos size)
+t_lemipc_error	init_scene(t_mlx_texture *scene, t_pos size)
 {
 	scene->ptr = mlx_new_image(MLX, size.x, size.y);
 	if (!scene->ptr)
@@ -78,7 +78,7 @@ t_error	init_scene(t_mlx_texture *scene, t_pos size)
 	return (SUCCESS);
 }
 
-t_error	init_scenes(void)
+t_lemipc_error	init_scenes(void)
 {
 	init_scene(&SCENE_BOARD, LEM_IPC_BOARD_WIDTH);
 	init_scene_board_border(CELL_SIZE);
@@ -115,9 +115,9 @@ void	get_screen_size(void)
 	}
 }
 
-t_error	init_graphical_mlx(void)
+t_lemipc_error	init_graphical_mlx(void)
 {
-	t_error	ret;
+	t_lemipc_error	ret;
 
 	ft_printf("init_graphical_mlx\n");
 	MLX = mlx_init();

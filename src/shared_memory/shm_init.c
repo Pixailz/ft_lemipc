@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 14:01:51 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/01 19:44:27 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:12:50 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_lem_ipc_mem	*LEM_IPC_MEM = FT_NULL;
 extern t_bool	IS_SIGINT;
 
-t_error init_shm_mem(void)
+t_lemipc_error init_shm_mem(void)
 {
 	void	*shm_ptr;
 
@@ -35,9 +35,9 @@ t_error init_shm_mem(void)
 	return (SUCCESS);
 }
 
-t_error	init_shm(void)
+t_lemipc_error	init_shm(void)
 {
-	t_error	ret;
+	t_lemipc_error	ret;
 
 	if ((ret = init_shm_mem()))
 		return (ret);

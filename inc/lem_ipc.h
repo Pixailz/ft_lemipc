@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 21:14:17 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/09/02 21:05:43 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:13:05 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,10 +186,9 @@ typedef struct s_sho
 # define SHO_SEM_KEY		"lem-ipc"
 # define SHO_MSQ_KEY		"lem-ipc"
 
-typedef enum e_error
+typedef enum e_lemipc_error
 {
-	SUCCESS,
-	SUCCESS_CMD,
+	SUCCESS_CMD = 1,
 	ERR_SHO_FD,
 	ERR_SHM_PTR,
 	ERR_SIGNAL,
@@ -201,7 +200,7 @@ typedef enum e_error
 	ERR_INIT_MLX_IMG,
 	STOP_SIGINT,
 	BOARD_FULL,
-}	t_error;
+}	t_lemipc_error;
 
 typedef enum e_dir
 {
@@ -318,7 +317,7 @@ char			*text_get_team_color(t_lem_team_id team_id);
 
 // graphical/init_graphical.c
 
-t_error			init_graphical(void);
+t_lemipc_error	init_graphical(void);
 
 // graphical/is_player_here.c
 
@@ -338,12 +337,12 @@ void			free_mlx(void);
 
 // graphical/mlx/init_graphical_mlx.c
 
-t_error			init_scene_board_border(t_size cell_size);
+t_lemipc_error	init_scene_board_border(t_size cell_size);
 void			init_scene_log_border(void);
-t_error			init_scene(t_mlx_texture *scene, t_pos size);
-t_error			init_scenes(void);
+t_lemipc_error	init_scene(t_mlx_texture *scene, t_pos size);
+t_lemipc_error	init_scenes(void);
 void			get_screen_size(void);
-t_error			init_graphical_mlx(void);
+t_lemipc_error	init_graphical_mlx(void);
 
 // graphical/mlx/key_press.c
 
@@ -409,7 +408,7 @@ t_size			print_tile_char(t_lem_player_id player_id, char *line);
 t_size			print_tile(t_tile tile, char *line);
 t_size			print_border(int cx, int cy, char *line, int *i);
 void			render_map(t_tile *map);
-t_error			run_graphical_text(void);
+t_lemipc_error	run_graphical_text(void);
 
 // graphical/text/stat.c
 
@@ -421,7 +420,7 @@ int				wait_for_player(char *name, t_uint32 oflag, t_uint32 perm);
 
 // init.c
 
-t_error			init_prog(void);
+t_lemipc_error	init_prog(void);
 
 // main.c
 
@@ -452,15 +451,15 @@ t_msq_atk		*msq_get_nearest_attack(void);
 
 // message_queue/msq_init.c
 
-t_error			init_msq(mqd_t *msq, char *name);
-t_error			set_attr_msq(mqd_t *msq);
+t_lemipc_error	init_msq(mqd_t *msq, char *name);
+t_lemipc_error	set_attr_msq(mqd_t *msq);
 char			*get_msq_key(t_lem_team_id team_id);
-t_error			init_msqs(void);
+t_lemipc_error	init_msqs(void);
 
 // message_queue/msq_init_graphical.c
 
-t_error			init_msq_graphical(mqd_t *msq, char *name);
-t_error			init_msqs_graphical(void);
+t_lemipc_error	init_msq_graphical(mqd_t *msq, char *name);
+t_lemipc_error	init_msqs_graphical(void);
 
 // message_queue/msq_recv.c
 
@@ -585,8 +584,8 @@ void			free_player(void);
 
 // player/player_init.c
 
-t_error			get_random_pos(void);
-t_error			init_player(void);
+t_lemipc_error	get_random_pos(void);
+t_lemipc_error	init_player(void);
 
 // player/player_move.c
 
@@ -602,7 +601,7 @@ t_lem_player_id	get_player_nb(void);
 // player/player_run_wrapper.c
 
 t_bool			player_loop(void);
-t_error			run_player(void);
+t_lemipc_error	run_player(void);
 
 // semaphore/sem_free.c
 
@@ -611,9 +610,9 @@ void			unlink_sems(void);
 
 // semaphore/sem_init.c
 
-t_error			init_sem(sem_t **sem, char *name, int value);
+t_lemipc_error	init_sem(sem_t **sem, char *name, int value);
 char			*get_sem_key(char *key);
-t_error			init_sems(void);
+t_lemipc_error	init_sems(void);
 
 // shared_memory/shm_get.c
 
@@ -623,8 +622,8 @@ void			*get_shm(t_sho sho);
 
 // shared_memory/shm_init.c
 
-t_error			init_shm_mem(void);
-t_error			init_shm(void);
+t_lemipc_error	init_shm_mem(void);
+t_lemipc_error	init_shm(void);
 
 // signal/signal_handler.c
 
@@ -632,7 +631,7 @@ void			sig_handler(int sig);
 
 // signal/signal_init.c
 
-t_error			init_signal(void);
+t_lemipc_error	init_signal(void);
 
 // sem/player_move.c
 /* ########################################################################## */

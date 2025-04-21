@@ -14,7 +14,7 @@
 
 extern mqd_t	LEM_IPC_MSQ[LEM_IPC_NB_TEAM];
 
-t_error	init_msq_graphical(mqd_t *msq, char *name)
+t_lemipc_error	init_msq_graphical(mqd_t *msq, char *name)
 {
 	errno = 0;
 	while ((*msq = mq_open(name, O_RDWR, 0644, FT_NULL)) == (mqd_t)-1)
@@ -30,9 +30,9 @@ t_error	init_msq_graphical(mqd_t *msq, char *name)
 	return (SUCCESS);
 }
 
-t_error	init_msqs_graphical(void)
+t_lemipc_error	init_msqs_graphical(void)
 {
-	t_error	retv;
+	t_lemipc_error	retv;
 	char	*tmp;
 	int		i;
 
